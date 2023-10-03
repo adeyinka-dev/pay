@@ -4,9 +4,8 @@ from django.core.validators import RegexValidator
 
 
 class Employee(AbstractUser):
-    full_name = models.CharField(max_length=255, blank=True, null=True)
     mobile_number = models.PositiveBigIntegerField(blank=True, null=True)
-    bank_name = models.CharField(max_length=255, blank=True, null=True)
+    bank = models.ForeignKey("banklist_api.Bank", on_delete=models.SET_NULL, null=True)
     account_name = models.CharField(max_length=255, blank=True, null=True)
     account_number = models.CharField(
         max_length=10,

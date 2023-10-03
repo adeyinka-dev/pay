@@ -1,7 +1,5 @@
-# forms.py
-
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Employee
 
 
@@ -9,13 +7,20 @@ class EmployeeSignUpForm(UserCreationForm):
     class Meta:
         model = Employee
         fields = (
-            "username",
+            "first_name",
+            "last_name",
             "email",
-            "password1",
-            "password2",
-            "full_name",
+        )
+
+
+# Employee update details form
+class EmployeeChangeForm(UserChangeForm):
+    class Meta:
+        model = Employee
+        fields = (
+            "email",
             "mobile_number",
-            "bank_name",
+            "bank",
             "account_name",
             "account_number",
         )

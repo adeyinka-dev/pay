@@ -9,10 +9,12 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = [
         "username",
         "email",
-        "full_name",
         "mobile_number",
-        "bank_name",
+        "bank",
         "account_name",
         "account_number",
     ]
-    search_fields = ["username", "email", "full_name"]
+    search_fields = [
+        "username",
+        "email",
+    ]
