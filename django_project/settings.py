@@ -48,6 +48,8 @@ SHARED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "banklist_api",
+    "compressor",
+    "employees",
 ]
 
 TENANT_APPS = [
@@ -59,7 +61,9 @@ TENANT_APPS = [
     "django.contrib.staticfiles",
     "hr_dashboard",
     "employees",
+    "pages",
 ]
+
 
 INSTALLED_APPS = list(SHARED_APPS) + [
     app for app in TENANT_APPS if app not in SHARED_APPS
@@ -68,8 +72,18 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 TENANT_MODEL = "companies.Client"
 
 TENANT_DOMAIN_MODEL = "companies.Domain"
-
 # AUTH_USER_MODEL = "employees.Employee"
+
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "backends.auth_backends.EmployeeBackend",
+    "backends.auth_backends.AdminUserBackend",
+]
+
+
+LOGIN_REDIRECT_URL = "home"
+
 
 MIDDLEWARE = [
     "django_tenants.middleware.main.TenantMainMiddleware",
@@ -164,11 +178,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]  # new
+STATIC_ROOT = BASE_DIR / "staticfiles"  # new
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+COMPRESS_ROOT = BASE_DIR / "static"
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 
 SHOW_PUBLIC_IF_NO_TENANT_FOUND = True

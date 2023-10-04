@@ -7,6 +7,7 @@ class EmployeeSignUpForm(UserCreationForm):
     class Meta:
         model = Employee
         fields = (
+            "username",
             "first_name",
             "last_name",
             "email",

@@ -1,0 +1,101 @@
+{% extends "_base.html" %}
+  
+{% block content %}
+
+<header
+      x-data="
+        {
+          navbarOpen: false
+        }
+      "
+      class="flex w-full items-center bg-white"
+    >
+      <div class="container mx-auto">
+        <div class="relative -mx-4 flex items-center justify-between">
+          <div
+            class="order-last px-4 lg:order-first lg:w-6/12 xl:w-5/12 2xl:w-4/12"
+          >
+            <button
+              @click="navbarOpen = !navbarOpen"
+              :class="navbarOpen && 'navbarTogglerActive' "
+              id="navbarToggler"
+              class="absolute right-4 top-1/2 block -translate-y-1/2 rounded-lg px-3 py-[6px] ring-primary focus:ring-2 lg:hidden"
+            >
+              <span
+                class="relative my-[6px] block h-[2px] w-[30px] bg-body-color"
+              ></span>
+              <span
+                class="relative my-[6px] block h-[2px] w-[30px] bg-body-color"
+              ></span>
+              <span
+                class="relative my-[6px] block h-[2px] w-[30px] bg-body-color"
+              ></span>
+            </button>
+            <nav
+              :class="!navbarOpen && 'hidden' "
+              id="navbarCollapse"
+              class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white py-5 px-6 shadow lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none"
+            >
+              <ul class="block lg:flex">
+                <li>
+                  <a
+                    href="javascript:void(0)"
+                    class="flex py-2 text-base font-medium text-dark hover:text-primary lg:ml-12 lg:inline-flex"
+                  >
+                    Employee
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="javascript:void(0)"
+                    class="flex py-2 text-base font-medium text-dark hover:text-primary lg:ml-12 lg:inline-flex"
+                  >
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="javascript:void(0)"
+                    class="flex py-2 text-base font-medium text-dark hover:text-primary lg:ml-12 lg:inline-flex"
+                  >
+                    Page
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="px-4 lg:w-3/12 xl:w-3/12 2xl:w-4/12">
+            <a
+              href="javascript:void(0)"
+              class="block w-[150px] max-w-full py-5 lg:mx-auto"
+            >
+              <img
+                src=""
+                alt="logo"
+                class="w-full lg:mx-auto"
+              />
+            </a>
+          </div>
+          <div class="w-full px-4 lg:w-3/12 xl:w-4/12 2xl:w-4/12">
+            <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
+              <a
+                href="{% url 'login' %}"
+                class="py-3 px-7 text-base font-medium text-dark hover:text-primary"
+              >
+                Login
+              </a>
+              <a
+                href="{% url 'signup' %}"
+                class="whitespace-nowrap rounded-lg bg-primary bg-opacity-10 py-3 px-7 text-base font-medium text-dark hover:bg-opacity-100 hover:text-white"
+              >
+                Sign Up
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+{% endblock content %}
+
+

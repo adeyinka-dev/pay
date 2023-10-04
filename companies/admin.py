@@ -37,3 +37,7 @@ class ClientAdmin(admin.ModelAdmin, TenantAdminMixin):
         "name",
     ]
     actions = [create_client_superuser]
+
+    # Method to only display client on main django admin super user.
+    def has_module_permission(self, request):
+        return request.tenant.schema_name == "public"
