@@ -49,7 +49,6 @@ SHARED_APPS = [
     "rest_framework",
     "banklist_api",
     "compressor",
-    "djmoney",
 ]
 
 TENANT_APPS = [

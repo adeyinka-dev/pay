@@ -7,6 +7,9 @@ class Employee(AbstractUser):
     mobile_number = models.PositiveBigIntegerField(blank=True, null=True)
     bank = models.ForeignKey("banklist_api.Bank", on_delete=models.SET_NULL, null=True)
     account_name = models.CharField(max_length=255, blank=True, null=True)
+    department = models.ForeignKey(
+        "hr_dashboard.Department", on_delete=models.SET_NULL, null=True
+    )
     account_number = models.CharField(
         max_length=10,
         blank=True,

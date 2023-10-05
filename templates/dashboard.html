@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+  
+{% block content %}
+<section class="bg-white py-20 lg:py-[120px]">
+    <div class="container mx-auto">
+      <div class="-mx-4 flex flex-wrap">
+        <div class="w-full px-4">
+          <div class="max-w-full overflow-x-auto rounded-xl shadow-lg">
+            <table class="w-full table-auto">
+              <thead>
+                <tr class="bg-[#F9FAFB] text-left">
+                  <th
+                    class="text-body-color min-w-[280px] py-4 pr-4 pl-11 text-base font-medium uppercase"
+                  >
+                    NAME
+                  </th>
+                  <th
+                    class="text-body-color min-w-[280px] py-4 px-4 text-base font-medium uppercase"
+                  >
+                   DEPARTMENT
+                  </th>
+                  <th
+                    class="text-body-color min-w-[250px] py-4 px-4 text-base font-medium uppercase"
+                  >
+                    EMAIL
+                  </th>
+                  <th
+                    class="text-body-color min-w-[140px] py-4 pr-11 pl-4 text-base font-medium uppercase"
+                  ></th>
+                </tr>
+              </thead>
+              {% for employee in object_list %}
+              <tbody>
+                <tr>
+                  <td class="border-stroke border-t py-5 px-4 pl-11">
+                    <h5 class="text-body-color text-base font-medium">
+                      {{ employee.first_name }} {{ employee.last_name }}
+                    </h5>
+                  </td>
+                  <td class="border-stroke border-t py-5 px-4">
+                    <p class="text-body-color text-base">
+                     {{ employee.department }}
+                    </p>
+                  </td>
+                  <td class="border-stroke border-t py-5 px-4">
+                    <p class="text-body-color text-base">
+                      {{ employee.email }}
+                    </p>
+                  </td>
+                  <td
+                    class="border-stroke border-t py-5 px-4 pr-11 text-center"
+                  >
+                    <button class="text-primary text-base font-medium">
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

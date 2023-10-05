@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import HomePageView
 from employees.views import SignUpView
+from hr_dashboard.views import EmployeeListView
 from django.contrib.auth.views import LoginView
 
 
@@ -12,4 +13,5 @@ urlpatterns = [
         name="login",
     ),
     path("signup/", SignUpView.as_view(), name="signup"),
+    path("dashboard/", EmployeeListView.as_view(), name="dashboard"),
 ]

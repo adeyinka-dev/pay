@@ -42,12 +42,14 @@ class Deduction(models.Model):
     ABSENCE = "ABSENCE"
     TURNOVER = "TURNOVER"
     SALARY_ADVANCE = "SALARY_ADVANCE"
+    OTHERS = "OTHERS"
 
     DEDUCTION_TYPES = [
         (TAX, "Tax"),
         (DEBT, "Shortfall"),
         (ABSENCE, "Absence Penalty"),
         (SALARY_ADVANCE, "Salary Advance"),
+        (OTHERS, "Others"),
     ]
     payslip = models.ForeignKey(Payslip, on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=DEDUCTION_TYPES)
