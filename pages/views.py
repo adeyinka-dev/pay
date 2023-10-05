@@ -9,3 +9,7 @@ class HomePageView(TemplateView):
         company = self.request.tenant
         context["company_name"] = company.name
         return context
+
+
+class Success(TemplateView):
+    template_name = "success.html"

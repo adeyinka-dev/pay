@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HomePageView
+from .views import HomePageView, Success
 from employees.views import SignUpView
 from hr_dashboard.views import EmployeeListView
 from django.contrib.auth.views import LoginView
@@ -7,6 +7,7 @@ from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
+    path("success/", Success.as_view(), name="success"),
     path(
         "login/",
         LoginView.as_view(template_name="registration/login.html"),
