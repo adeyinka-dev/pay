@@ -49,7 +49,7 @@ SHARED_APPS = [
     "rest_framework",
     "banklist_api",
     "compressor",
-    "employees",
+    "djmoney",
 ]
 
 TENANT_APPS = [
@@ -59,9 +59,11 @@ TENANT_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # app
     "hr_dashboard",
     "employees",
     "pages",
+    # Third Party
 ]
 
 

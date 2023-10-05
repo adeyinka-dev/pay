@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Department, Payslip, Deduction
+
+admin.site.register(Department)
+admin.site.register(Payslip)
+admin.site.register(Deduction)
