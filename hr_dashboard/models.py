@@ -14,7 +14,7 @@ class Department(models.Model):
 class Payslip(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    date = models.DateTimeField(null=True)
+    date = models.DateTimeField(auto_now_add=True)
     month = models.PositiveIntegerField(
         choices=[(i, i) for i in range(1, 13)], null=True, blank=True
     )  # 1-12 for January to December

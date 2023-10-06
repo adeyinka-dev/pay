@@ -25,6 +25,7 @@
                         <p class="card-text">Account Number: {{ user.account_number }}</p>
                         <p class="card-text">Department: {{ user.department.name }}</p>
                     </div>
+                    <a href="{% url 'update_details' %}" class="btn btn-sm btn-warning">Edit</a>
                 </div>
             </div>
             <div class="col-md-8">

@@ -29,7 +29,6 @@ class PayslipForm(forms.ModelForm):
         fields = [
             "employee",
             "department",
-            "date",
             "month",
             "year",
             "earnings",
