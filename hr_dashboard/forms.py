@@ -20,7 +20,7 @@ class EmployeeDepartmentForm(forms.ModelForm):
 class DeductionForm(forms.ModelForm):
     class Meta:
         model = Deduction
-        fields = ["type", "description", "amount"]
+        fields = ["type", "description", "amount", "payslip"]
 
 
 class PayslipForm(forms.ModelForm):

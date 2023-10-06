@@ -32,11 +32,26 @@ class DeductionCreateView(CreateView):
     success_url = reverse_lazy("deduction_list")
 
 
+class DeductionListView(ListView):
+    model = Deduction
+    template_name = "deduction_list.html"
+
+
 class PayslipCreateView(CreateView):
     model = Payslip
     form_class = PayslipForm
     template_name = "payslip_form.html"
     success_url = reverse_lazy("payslip_list")
+
+
+class PayslipListView(ListView):
+    model = Payslip
+    template_name = "payslip_list.html"
+
+
+class PayslipDetailView(DetailView):
+    model = Payslip
+    template_name = "payslip_detail.html"
 
 
 class EmployeeListView(ListView):
