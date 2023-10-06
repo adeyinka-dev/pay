@@ -25,10 +25,13 @@
                         <p class="card-text">Account Number: {{ user.account_number }}</p>
                         <p class="card-text">Department: {{ user.department.name }}</p>
                     </div>
-                    <a href="{% url 'update_details' %}" class="btn btn-sm btn-warning">Edit</a>
+                    
                 </div>
+
             </div>
             <div class="col-md-8">
+                <a href="{% url 'password_change' %}" class="btn btn-sm btn-warning">Change Password</a>
+                <a href="{% url 'update_details' %}" class="btn btn-sm btn-success">Edit</a>
                 <!-- You can add more widgets or information panels here. For example, recent activities, notifications, etc. -->
             </div>
         </div>
