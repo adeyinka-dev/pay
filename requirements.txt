@@ -1,7 +1,10 @@
 asgiref==3.7.2
+Babel==2.13.0
 black==23.9.1
 click==8.1.7
 Django==4.2.5
+django-appconf==1.0.5
+django-compressor==4.4
 django-tenants==3.5.0
 djangorestframework==3.14.0
 environs==9.5.0
@@ -11,7 +14,11 @@ packaging==23.1
 pathspec==0.11.2
 platformdirs==3.10.0
 psycopg2-binary==2.9.8
+py-moneyed==3.0
 pyscopg2==66.0.2
 python-dotenv==1.0.0
 pytz==2023.3.post1
+rcssmin==1.1.1
+rjsmin==1.2.1
 sqlparse==0.4.4
+typing_extensions==4.8.0

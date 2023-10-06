@@ -4,6 +4,7 @@ from .models import Client
 from django.contrib.auth.models import User
 from django_tenants.utils import schema_context
 from django.contrib import messages
+from django.db import connection
 
 
 def create_client_superuser(modeladmin, request, queryset):
@@ -32,12 +33,24 @@ create_client_superuser.short_description = "Create superuser for selected compa
 
 
 @admin.register(Client)
-class ClientAdmin(admin.ModelAdmin, TenantAdminMixin):
-    list_display = [
-        "name",
-    ]
+class ClientAdmin(TenantAdminMixin, admin.ModelAdmin):
+    list_display = ["name"]
     actions = [create_client_superuser]
 
-    # Method to only display client on main django admin super user.
+    def in_public_schema(self):
+        return connection.schema_name == "public"
+
     def has_module_permission(self, request):
-        return request.tenant.schema_name == "public"
+        return self.in_public_schema()
+
+    def has_view_permission(self, request, obj=None):
+        return self.in_public_schema()
+
+    def has_change_permission(self, request, obj=None):
+        return self.in_public_schema()
+
+    def has_add_permission(self, request, obj=None):
+        return self.in_public_schema()
+
+    def has_delete_permission(self, request, obj=None):
+        return self.in_public_schema()
