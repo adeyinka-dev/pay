@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Add</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container mt-5">
+        <h2>Departments</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Standard Wages</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in object_list %}
+                <tr>
+                    <td>{{ department.name }}</td>
+                    <td>{{ department.standard_wages }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+</body>
+</html>

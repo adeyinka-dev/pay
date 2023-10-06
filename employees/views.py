@@ -5,7 +5,17 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.views.generic.edit import CreateView
+from django.views.generic import TemplateView
 import random
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class EmployeeLoginView(auth_views.LoginView):
+    template_name = "registration/login.html"
+
+    def get_success_url(self):
+        return reverse_lazy("user")
 
 
 class SignUpView(CreateView):
@@ -31,3 +41,7 @@ class SignUpView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("success")
+
+
+class EmployeeDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "user.html"

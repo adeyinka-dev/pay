@@ -5,16 +5,16 @@ from employees.models import Employee
 
 class DepartmentForm(forms.ModelForm):
     class Meta:
-        models = Department
+        model = Department
         fields = ["name", "standard_wages"]
 
 
 class EmployeeDepartmentForm(forms.ModelForm):
-    department = forms.ModelChoice(queryset=Department.objects.all())
+    department = forms.ModelChoiceField(queryset=Department.objects.all())
 
     class Meta:
         model = Employee
-        fields = ["departmemt"]
+        fields = ["department"]
 
 
 class DeductionForm(forms.ModelForm):
