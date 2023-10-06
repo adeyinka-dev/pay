@@ -2,6 +2,7 @@ from django.urls import path
 from .views import HomePageView, Success
 from employees.views import SignUpView, EmployeeLoginView, EmployeeDashboardView
 from hr_dashboard.views import (
+    AdminLoginView,
     DeductionCreateView,
     DeductionListView,
     EmployeeDepartmentUpdateView,
@@ -27,6 +28,7 @@ urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
     path("user/", EmployeeDashboardView.as_view(), name="user"),
     # HR Urls
+    path("dashboard-login/", AdminLoginView.as_view(), name="admin_login"),
     path("dashboard/", EmployeeListView.as_view(), name="dashboard"),
     path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee_detail"),
     path("payslips/", PayslipListView.as_view(), name="payslip_list"),
