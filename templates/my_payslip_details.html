@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Payslip for {{ object.employee.username }} - {{ object.date }}</h2>
+        <p><strong>Department:</strong> {{ object.department.name }}</p>
+        <p><strong>Date:</strong> {{ object.date }}</p>
+        <p><strong>Month:</strong> {{ object.month }}</p>
+        <p><strong>Year:</strong> {{ object.year }}</p>
+        <p><strong>Earnings:</strong> {{ object.earnings }}</p>
+        <p><strong>Bonuses:</strong> {{ object.bonuses }}</p>
+        <p><strong>Total Deductions:</strong> {{ object.total_deductions }}</p>
+        <p><strong>Net Pay:</strong> {{ object.net_pay }}</p>
+    </div>
+
+</body>
+</html>

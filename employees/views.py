@@ -5,10 +5,14 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.views.generic.edit import CreateView
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import TemplateView, UpdateView, ListView, DetailView
 import random
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.apps import apps
+
+Payslip = apps.get_model("hr_dashboard", "Payslip")
+Deduction = apps.get_model("hr_dashboard", "Deduction")
 
 
 class EmployeeLoginView(auth_views.LoginView):
@@ -32,6 +36,7 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         user = form.save(commit=False)  # Don't save the instance yet
+        user.username = user.email  # Set the username to the email
         user.employee_id = self.generate_unique_employee_id()
         # If the department field is empty, it will simply save as None
         user.department = form.cleaned_data.get("department")
@@ -45,6 +50,27 @@ class SignUpView(CreateView):
 
 class EmployeeDashboardView(LoginRequiredMixin, TemplateView):
     template_name = "user.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        Payslip = apps.get_model("hr_dashboard", "Payslip")
+        context["last_three_payslips"] = Payslip.objects.filter(
+            employee=self.request.user
+        ).order_by("-date")[:3]
+        return context
+
+
+class EmployeePayslipListView(LoginRequiredMixin, ListView):
+    model = Payslip
+    template_name = "employee_payslip_list.html"
+
+    def get_queryset(self):
+        return Payslip.objects.filter(employee=self.request.user).order_by("-date")
+
+
+class MyPayslipDetailView(LoginRequiredMixin, DetailView):
+    model = Payslip
+    template_name = "my_payslip_details.html"
 
 
 class EmployeeUpdateView(LoginRequiredMixin, UpdateView):

@@ -78,6 +78,7 @@ TENANT_DOMAIN_MODEL = "companies.Domain"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
+    "backends.auth_backends.EmailOrEmployeeIDBackend",
     "backends.auth_backends.EmployeeBackend",
     "backends.auth_backends.AdminUserBackend",
 ]

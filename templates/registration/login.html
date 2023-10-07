@@ -37,7 +37,7 @@
               
             </div>
 
-            <form method="post">
+            <!-- <form method="post">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
                 <div class="text-danger font-semibold">{{ form.non_field_errors }}</div>
@@ -65,7 +65,18 @@
                   class="bordder-primary bg-primary w-full cursor-pointer rounded-md border py-3 px-5 text-base font-semibold text-white transition hover:bg-opacity-90"
                 >Login</button>
               </div>
+            </form> -->
+
+            <form method="post">
+              {% csrf_token %}
+              <label for="{{ form.username.id_for_label }}">Email or Employee ID:</label>
+              {{ form.username }}
+              <label for="{{ form.password.id_for_label }}">Password:</label>
+              {{ form.password }}
+              <button type="submit">Login</button>
             </form>
+          
+
             <div class="relative z-10 mb-8 flex items-center justify-center">
               <span
                 class="bg-form-stroke absolute top-1/2 left-0 -z-10 hidden h-[1px] w-full -translate-y-1/2 sm:block"

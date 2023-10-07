@@ -9,38 +9,57 @@
 </head>
 <body>
     <div class="container mt-5">
+        <h2>Welcome, {{ request.user.username }}</h2>
+    
+        <!-- Display the last three payslips -->
+        <h3>Last 3 Payslips</h3>
+        <ul class="list-group mb-4">
+            {% for payslip in last_three_payslips %}
+            <li class="list-group-item">
+                <a href="{% url 'payslip_detail' payslip.pk %}">{{ payslip.date }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    
+        <!-- Dashboard boxes -->
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header bg-primary text-white">
-                        Profile Information
-                    </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">{{ user.username }}</h5>
-                        <p class="card-text">Employee ID: {{ user.employee_id }}</p>
-                        <p class="card-text">Email: {{ user.email }}</p>
-                        <p class="card-text">Mobile: {{ user.mobile_number }}</p>
-                        <p class="card-text">Bank: {{ user.bank }}</p>
-                        <p class="card-text">Account Name: {{ user.account_name }}</p>
-                        <p class="card-text">Account Number: {{ user.account_number }}</p>
-                        <p class="card-text">Department: {{ user.department.name }}</p>
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">View your profile details.</p>
                     </div>
-                    
+                    <div class="card-footer">
+                        <a href="{#}" class="btn btn-primary btn-block">Go to Profile</a>
+                    </div>
                 </div>
-
             </div>
-            <div class="col-md-8">
-                <a href="{% url 'password_change' %}" class="btn btn-sm btn-warning">Change Password</a>
-                <a href="{% url 'update_details' %}" class="btn btn-sm btn-success">Edit</a>
-                <!-- You can add more widgets or information panels here. For example, recent activities, notifications, etc. -->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Payslips</h5>
+                        <p class="card-text">View all your payslips.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'employee_payslip_list' %}" class="btn btn-info btn-block">View Payslips</a>
+                    </div>
+                </div>
             </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Edit Profile</h5>
+                        <p class="card-text">Update your profile details.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'update_details' %}" class="btn btn-warning btn-block">Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more boxes as needed -->
         </div>
     </div>
-   
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 
 </body>
 </html>

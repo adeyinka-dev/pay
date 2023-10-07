@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Payslips</h2>
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Month</th>
+                    <th>Year</th>
+                    <th>Earnings</th>
+                    <th>Bonuses</th>
+                    <th>Deductions</th>
+                    <th>Net Pay</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payslip in object_list %}
+                <tr>
+                    <td>{{ payslip.employee.username }}</td>
+                    <td>{{ payslip.department.name }}</td>
+                    <td>{{ payslip.date }}</td>
+                    <td>{{ payslip.month }}</td>
+                    <td>{{ payslip.year }}</td>
+                    <td>{{ payslip.earnings }}</td>
+                    <td>{{ payslip.bonuses }}</td>
+                    <td>{{ payslip.total_deductions }}</td>
+                    <td>{{ payslip.net_pay }}</td>
+                    <td>
+                        <!-- You can add action buttons here, like edit or delete -->
+                        <a href="{% url 'my_payslip_detail' payslip.pk %}" class="btn btn-sm btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

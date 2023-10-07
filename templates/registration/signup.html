@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignUp</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Sign Up</h2>
     <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign Up</button> 
+        {% csrf_token %}
+        {{ form.email.label_tag }} {{ form.email }}
+        <div class="name-fields">
+            {{ form.first_name.label_tag }} {{ form.first_name }}
+            {{ form.last_name.label_tag }} {{ form.last_name }}
+        </div>
+        {{ form.password1.label_tag }} {{ form.password1 }}
+        {{ form.password2.label_tag }} {{ form.password2 }}
+        <button type="submit">Sign Up</button>
+    </form>
  </form>
 </body>
 </html>

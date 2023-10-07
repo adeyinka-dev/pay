@@ -2,6 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import HomePageView, Success
 from employees.views import (
+    EmployeePayslipListView,
+    MyPayslipDetailView,
     SignUpView,
     EmployeeLoginView,
     EmployeeDashboardView,
@@ -44,6 +46,12 @@ urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),
     path("user/", EmployeeDashboardView.as_view(), name="user"),
     path("update-details/", EmployeeUpdateView.as_view(), name="update_details"),
+    path(
+        "my-payslips/", EmployeePayslipListView.as_view(), name="employee_payslip_list"
+    ),
+    path(
+        "my_payslips/<int:pk>/", MyPayslipDetailView.as_view(), name="my_payslip_detail"
+    ),
     # HR Urls
     path("dashboard-login/", AdminLoginView.as_view(), name="admin_login"),
     path("dashboard/", EmployeeListView.as_view(), name="dashboard"),

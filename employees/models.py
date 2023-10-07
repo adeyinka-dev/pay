@@ -5,12 +5,13 @@ from django.core.validators import RegexValidator
 
 # generate an employee ID - last 2 digit of current year and 4 random numbers
 class Employee(AbstractUser):
+    email = models.EmailField(unique=True)
     employee_id = models.CharField(max_length=6, unique=True, blank=True, null=True)
     mobile_number = models.PositiveBigIntegerField(blank=True, null=True)
     bank = models.ForeignKey("banklist_api.Bank", on_delete=models.SET_NULL, null=True)
     account_name = models.CharField(max_length=255, blank=True, null=True)
     department = models.ForeignKey(
-        "hr_dashboard.Department", on_delete=models.SET_NULL, null=True
+        "hr_dashboard.Department", on_delete=models.SET_NULL, null=True, blank=True
     )
     account_number = models.CharField(
         max_length=10,

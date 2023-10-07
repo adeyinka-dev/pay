@@ -8,15 +8,13 @@ from .models import Employee
 class EmployeeSignUpForm(UserCreationForm):
     class Meta:
         model = Employee
-        department = forms.ModelChoiceField(
-            queryset=Department.objects.all(), required=False
-        )
         fields = (
-            "username",
+            "email",  # Use email instead of username
             "first_name",
             "last_name",
-            "email",
             "department",
+            "password1",
+            "password2",
         )
 
 
@@ -27,7 +25,6 @@ class EmployeeChangeForm(UserChangeForm):
     class Meta:
         model = Employee
         fields = (
-            "email",
             "mobile_number",
             "bank",
             "account_name",
