@@ -26,6 +26,8 @@ from django.contrib.auth.views import LoginView
 
 
 urlpatterns = [
+    # Employee URLS
+    path("signup/", SignUpView.as_view(), name="signup"),
     path(
         "password-change/",
         auth_views.PasswordChangeView.as_view(),
@@ -43,7 +45,6 @@ urlpatterns = [
         EmployeeLoginView.as_view(),
         name="login",
     ),
-    path("signup/", SignUpView.as_view(), name="signup"),
     path("user/", EmployeeDashboardView.as_view(), name="user"),
     path("update-details/", EmployeeUpdateView.as_view(), name="update_details"),
     path(

@@ -6,7 +6,7 @@ from employees.models import Employee
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ["name", "standard_wages"]
+        fields = ["name"]
 
 
 class EmployeeDepartmentForm(forms.ModelForm):
@@ -20,17 +20,10 @@ class EmployeeDepartmentForm(forms.ModelForm):
 class DeductionForm(forms.ModelForm):
     class Meta:
         model = Deduction
-        fields = ["type", "description", "amount", "payslip"]
+        fields = ["type", "description", "amount"]
 
 
 class PayslipForm(forms.ModelForm):
     class Meta:
         model = Payslip
-        fields = [
-            "employee",
-            "department",
-            "month",
-            "year",
-            "earnings",
-            "bonuses",
-        ]
+        fields = ["employee", "month", "year", "bonuses"]

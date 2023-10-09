@@ -11,13 +11,14 @@
         {% csrf_token %}
         {{ form.email.label_tag }} {{ form.email }}
         <div class="name-fields">
-            {{ form.first_name.label_tag }} {{ form.first_name }}
-            {{ form.last_name.label_tag }} {{ form.last_name }}
+            {{ form.full_name.label_tag }} {{ form.full_name }}
         </div>
+        {{ form.department.label_tag }} {{ form.department }}
         {{ form.password1.label_tag }} {{ form.password1 }}
         {{ form.password2.label_tag }} {{ form.password2 }}
         <button type="submit">Sign Up</button>
     </form>
+    
  </form>
 </body>
 </html>
