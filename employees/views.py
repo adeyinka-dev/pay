@@ -1,6 +1,6 @@
 from datetime import datetime
 from .models import Employee
-from .forms import EmployeeSignUpForm, EmployeeChangeForm
+from .forms import EmployeeSignUpForm, EmployeeBankDetailsForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -15,11 +15,15 @@ Payslip = apps.get_model("hr_dashboard", "Payslip")
 Deduction = apps.get_model("hr_dashboard", "Deduction")
 
 
+class EmployeeHomePageView(TemplateView):
+    template_name = "employee/employee_home.html"
+
+
 class EmployeeLoginView(auth_views.LoginView):
     template_name = "registration/login.html"
 
     def get_success_url(self):
-        return reverse_lazy("user")
+        return reverse_lazy("employee_dashboard")
 
 
 class SignUpView(CreateView):
@@ -48,16 +52,16 @@ class SignUpView(CreateView):
         return reverse_lazy("success")
 
 
-class EmployeeDashboardView(LoginRequiredMixin, TemplateView):
-    template_name = "user.html"
+class EmployeeLogoutView(auth_views.LogoutView):
+    next_page = "employee_home"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        Payslip = apps.get_model("hr_dashboard", "Payslip")
-        context["last_three_payslips"] = Payslip.objects.filter(
-            employee=self.request.user
-        ).order_by("-date")[:3]
-        return context
+
+class EmployeeDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "employee/employee_dashboard.html"
+
+
+class EmployeeProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "employee/employee_details.html"
 
 
 class EmployeePayslipListView(LoginRequiredMixin, ListView):
@@ -73,10 +77,10 @@ class MyPayslipDetailView(LoginRequiredMixin, DetailView):
     template_name = "my_payslip_details.html"
 
 
-class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
+class EmployeeBankUpdateView(LoginRequiredMixin, UpdateView):
     model = Employee
-    form_class = EmployeeChangeForm
-    template_name = "update_details.html"
+    form_class = EmployeeBankDetailsForm
+    template_name = "employee/update_bank_details.html"
 
     def get_object(self, queryset=None):
         return self.request.user

@@ -1,51 +1,233 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
-        <h2>Payslips</h2>
-        <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Employee</th>
-                    <th>Department</th>
-                    <th>Date</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                    <th>Earnings</th>
-                    <th>Bonuses</th>
-                    <th>Deductions</th>
-                    <th>Net Pay</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payslip in object_list %}
-                <tr>
-                    <td>{{ payslip.employee.username }}</td>
-                    <td>{{ payslip.department.name }}</td>
-                    <td>{{ payslip.date }}</td>
-                    <td>{{ payslip.month }}</td>
-                    <td>{{ payslip.year }}</td>
-                    <td>{{ payslip.earnings }}</td>
-                    <td>{{ payslip.bonuses }}</td>
-                    <td>{{ payslip.total_deductions }}</td>
-                    <td>{{ payslip.net_pay }}</td>
-                    <td>
-                        <!-- You can add action buttons here, like edit or delete -->
-                        <a href="{% url 'my_payslip_detail' payslip.pk %}" class="btn btn-sm btn-primary">View</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payslip List</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}"/>
+    <script defer src="{% static 'js/alpine.js' %}"></script>
+  </head>
+  <body class="bg-gray">
+    <div class="preloader">
+        <img src="{% static 'img/synthx2.png' %}" alt="Logo" class="bounce-logo">
     </div>
+      <header x-data="{navbarOpen: false}">
+        
+        <div class="mx w-full px-2 xl:container mt-10">
+          <div
+            class="flex items-center justify-between bg-transparent px-4 xl:px-[30px]"
+          >
+            <div class="mr-4 max-w-[100px] lg:mr-12">
+              <a href="javascript:void(0)" class="block py-4">
+                <img class="bounce-logo" width="100" height="20" src="{% static 'img/synthx2.png' %}" alt="logo" />
+              </a>
+            </div>
+  
+            <div class="flex w-full items-center justify-end ml-20">
+                <div class="flex items-center justify-end">
+                    <div class="flex items-center">
 
-</body>
+                        <div class="relative w-full max-w-[120px] lg:block">
+                            <input
+                              type="text"
+                              placeholder="Search..."
+                              class="h-9 w-full rounded border border-secondary bg-white bg-opacity-[8%] pr-4 pl-5 text-sm font-medium text-secondary placeholder placeholder-opacity-50 outline-none focus:border-success"
+                            />
+                            <button
+                              class="absolute left-4 top-1/2 -translate-y-1/2 text-white opacity-50"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 14 14"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  clip-rule="evenodd"
+                                  d="M6.41666 2.33268C4.16149 2.33268 2.33332 4.16085 2.33332 6.41602C2.33332 8.67118 4.16149 10.4993 6.41666 10.4993C8.67182 10.4993 10.5 8.67118 10.5 6.41602C10.5 4.16085 8.67182 2.33268 6.41666 2.33268ZM1.16666 6.41602C1.16666 3.51652 3.51716 1.16602 6.41666 1.16602C9.31615 1.16602 11.6667 3.51652 11.6667 6.41602C11.6667 9.31551 9.31615 11.666 6.41666 11.666C3.51716 11.666 1.16666 9.31551 1.16666 6.41602Z"
+                                  fill="currentColor"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  clip-rule="evenodd"
+                                  d="M9.3 9.29976C9.52781 9.07195 9.89716 9.07195 10.125 9.29976L12.6625 11.8373C12.8903 12.0651 12.8903 12.4344 12.6625 12.6622C12.4347 12.89 12.0653 12.89 11.8375 12.6622L9.3 10.1247C9.0722 9.89691 9.0722 9.52757 9.3 9.29976Z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        <div
+                          @click.outside="navbarOpen = false"
+                          class="group relative"
+                        >
+                          <button
+                            @click="navbarOpen = !navbarOpen"
+                            class="flex h-9 w-9 items-center justify-center rounded bg-white bg-opacity-[8%] text-white"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M1.45833 10.0007C1.45833 9.42535 1.9247 8.95898 2.49999 8.95898H17.5C18.0753 8.95898 18.5417 9.42535 18.5417 10.0007C18.5417 10.5759 18.0753 11.0423 17.5 11.0423H2.49999C1.9247 11.0423 1.45833 10.5759 1.45833 10.0007Z"
+                                fill="#0b6e4f"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M1.45833 5.00065C1.45833 4.42535 1.9247 3.95898 2.49999 3.95898H17.5C18.0753 3.95898 18.5417 4.42535 18.5417 5.00065C18.5417 5.57595 18.0753 6.04232 17.5 6.04232H2.49999C1.9247 6.04232 1.45833 5.57595 1.45833 5.00065Z"
+                                fill="#0b6e4f"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M1.45833 15.0007C1.45833 14.4254 1.9247 13.959 2.49999 13.959H17.5C18.0753 13.959 18.5417 14.4254 18.5417 15.0007C18.5417 15.5759 18.0753 16.0423 17.5 16.0423H2.49999C1.9247 16.0423 1.45833 15.5759 1.45833 15.0007Z"
+                                fill="#0b6e4f"
+                              />
+                            </svg>
+                          </button>
+                          <nav
+                            :class="navbarOpen ? 'visible opacity-100 top-full' : 'invisible opacity-0 top-[120%]'"
+                            class="absolute left-0 mt-2 w-[100x] rounded bg-primary shadow-card-2 duration-200"
+                          >
+                            <ul class="space-y-5 py-6 px-5">
+                              <li>
+                                <a
+                                  href="{% url 'employee_dashboard' %}"
+                                  class="relative block text-sm font-medium text-white opacity-70 duration-200 hover:opacity-100"
+                                >
+                                <svg  width="20" height="20" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="white"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g fill="none" fill-rule="evenodd" id="页面-1" stroke="none" stroke-width="1"> <g id="导航图标" transform="translate(-26.000000, -15.000000)"> <g id="编组" transform="translate(26.000000, 15.000000)"> <rect fill="#FFFFFF" fill-opacity="0.01" fill-rule="nonzero" height="24" id="矩形" width="24" x="0" y="0"></rect> <polygon id="路径" points="4.5 9 4.5 21 19.5 21 19.5 9 12 3"></polygon> <polygon id="路径" points="4.5 21 4.5 9 2 11 12 3 22 11 19.5 9 19.5 21" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></polygon> <polygon id="路径" points="9.5 14.5 9.5 21 14.5 21 14.5 14.5" stroke="white" stroke-linejoin="round" stroke-width="1.5"></polygon> <line id="路径" stroke="white" stroke-linecap="round" stroke-width="1.5" x1="4.5" x2="19.5" y1="21" y2="21"></line> </g> </g> </g> </g></svg>
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  href="{% url 'employee_logout' %}"
+                                  class="relative block text-sm font-medium text-white opacity-70 duration-200 hover:opacity-100"
+                                >
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21 12L13 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
+                        </div>
+        
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- ====== Page Title Section Start -->
+        <section class="py-5 bg-transparent rounded-lg mx-2 mb-4"> 
+            <div class="mx-auto px-4 sm:container">
+            <div class="border-secondary border-l-[5px] pl-5 ease-linear duration-1000">
+                <h2 class="text-xl font-semibold text-black">
+                    Payslip List
+                </h2>
+                <p class="text-body-color text-xs font-medium">
+                    Browse through your monthly earnings and deductions. 
+                </p>
+            </div>
+            </div>
+        </section>
+    <!-- ====== Horizontal Menu Section Start -->
+
+    <section class="relative z-10 overflow-hidden lg:py-[50px]">
+        <div class="container mx-auto">
+          <div>
+            <div class="border-stroke max-w-[370px] border py-[10px]">
+                {% for payslip in object_list %}
+              <div
+                class="flex items-center justify-between py-[10px] pl-2 pr-4 hover:bg-gray-2 border-b border-stroke"
+              >
+                <div class="flex items-center">
+                  <div class="mr-3">
+                    <p class="bg-danger text-black inline-flex text-xs text-danger">
+                      .
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h4 class="text-base font-medium text-black">{{ payslip.get_month_display }} {{ payslip.year }}</h4>
+                    <p class="text-body-color text-base">{{ payslip.net_pay }}</p>
+                  </div>
+                </div>
+                <div>
+                  <div x-data="{openDropDown: false}" class="relative">
+                    <button
+                      @click="openDropDown = !openDropDown"
+                      class="text-body-color"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12Z"
+                          fill="#637381"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M10 5C10 3.89543 10.8954 3 12 3C13.1046 3 14 3.89543 14 5C14 6.10457 13.1046 7 12 7C10.8954 7 10 6.10457 10 5Z"
+                          fill="#637381"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M10 19C10 17.8954 10.8954 17 12 17C13.1046 17 14 17.8954 14 19C14 20.1046 13.1046 21 12 21C10.8954 21 10 20.1046 10 19Z"
+                          fill="#637381"
+                        />
+                      </svg>
+                    </button>
+  
+                    <div
+                      x-show="openDropDown"
+                      @click.outside="openDropDown = false"
+                      class="shadow-card absolute right-0 top-full z-40 w-[150px] space-y-1 rounded bg-white p-2"
+                    >
+                      <a
+                        href="{% url 'payslip_detail' payslip.pk %}"
+                        class="text-body-color hover:bg-gray-2 w-full rounded py-1.5 px-3 text-left text-sm"
+                      >
+                        View
+                    </a>
+                      <button
+                        class="text-body-color hover:bg-gray-2 w-full rounded py-1.5 px-3 text-left text-sm"
+                      >
+                        Download
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+  
+             
+  
+             
+             
+            </div>
+          </div>
+        </div>
+    </section>
+    <!-- ====== Horizontal Menu Section End -->
+    <script defer src="{% static 'js/preloader.js' %}"></script>
+  </body>
 </html>

@@ -1,0 +1,219 @@
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    /* You can change this to your preferred background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.bounce-logo {
+    width: 100px;
+    /* Adjust based on your logo's size */
+    height: auto;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-20px);
+    }
+
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.menu_card {
+    transition: transform 0.5s ease-out;
+}
+
+.card-top-left {
+    transform: translate(-100%, -100%);
+}
+
+.card-top-right {
+    transform: translate(100%, -100%);
+}
+
+.card-bottom-left {
+    transform: translate(-100%, 100%);
+}
+
+.card-bottom-right {
+    transform: translate(100%, 100%);
+}
+
+
+
+
+
+
+#floatingNav {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.floating_items {
+    display: flex;
+    gap: 2.5rem;
+    padding: 0.8rem 1rem;
+    transition: all 0.5s linear;
+}
+
+.floating_items i {
+    font-size: 1rem;
+    display: grid;
+    transition: all 0.5s linear;
+}
+
+.floating_items i :hover {
+    font-size: 1.5rem;
+    transition: all 0.5s linear;
+}
+
+.floating_items a .home_class {
+    font-size: 1.8rem;
+}
+
+@keyframes waveAnimation {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(14deg);
+    }
+
+    30% {
+        transform: rotate(-8deg);
+    }
+
+    70% {
+        transform: rotate(8deg);
+    }
+
+    90% {
+        transform: rotate(-4deg);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.wave-emoji {
+    display: inline-block;
+    font-size: 1.2rem;
+    animation: waveAnimation 1s infinite, fadeOut 4s forwards;
+    animation-delay: 0s, 2s;
+
+}
+
+@media screen and (max-width: 1024px) {
+    #floatingNav {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .floating_items {
+        display: flex;
+        gap: 2.5rem;
+        padding: 0.8rem 1rem;
+        transition: all 0.5s linear;
+    }
+
+    .floating_items i {
+        font-size: 1rem;
+        display: grid;
+        transition: all 0.5s linear;
+    }
+
+    .floating_items i :hover {
+        font-size: 1.5rem;
+        transition: all 0.5s linear;
+    }
+
+    .floating_items a .home_class {
+        font-size: 1.8rem;
+    }
+
+    @keyframes waveAnimation {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        10% {
+            transform: rotate(14deg);
+        }
+
+        30% {
+            transform: rotate(-8deg);
+        }
+
+        70% {
+            transform: rotate(8deg);
+        }
+
+        90% {
+            transform: rotate(-4deg);
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    .wave-emoji {
+        display: inline-block;
+        font-size: 1.2rem;
+        animation: waveAnimation 1s infinite, fadeOut 4s forwards;
+        animation-delay: 0s, 2s;
+
+    }
+
+}

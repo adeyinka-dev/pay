@@ -14,13 +14,13 @@ class EmployeeDepartmentForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ["department"]
+        fields = ["department", "basic_salary"]
 
 
 class DeductionForm(forms.ModelForm):
     class Meta:
         model = Deduction
-        fields = ["type", "description", "amount"]
+        fields = ["type", "description", "amount", "employee", "year", "month"]
 
 
 class PayslipForm(forms.ModelForm):

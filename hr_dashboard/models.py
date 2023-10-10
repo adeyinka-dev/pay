@@ -4,6 +4,22 @@ from employees.models import Employee
 from django.utils import timezone
 
 
+MONTH_CHOICES = [
+    (1, "January"),
+    (2, "February"),
+    (3, "March"),
+    (4, "April"),
+    (5, "May"),
+    (6, "June"),
+    (7, "July"),
+    (8, "August"),
+    (9, "September"),
+    (10, "October"),
+    (11, "November"),
+    (12, "December"),
+]
+
+
 class Department(models.Model):
     name = models.CharField(max_length=100)
 
@@ -30,9 +46,7 @@ class Deduction(models.Model):
     description = models.TextField(null=True, blank=True)
     amount = models.DecimalField(max_digits=14, decimal_places=2, default=0)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-    month = models.PositiveIntegerField(
-        choices=[(i, i) for i in range(1, 13)], null=True
-    )
+    month = models.PositiveIntegerField(choices=MONTH_CHOICES, null=True)
     year = models.PositiveIntegerField(default=timezone.now().year, null=True)
 
     def __str__(self):
@@ -40,7 +54,6 @@ class Deduction(models.Model):
 
 
 class Payslip(models.Model):
-    MONTH_CHOICES = [(i, i) for i in range(1, 13)]
     PENDING = "PEN"
     UNPAID = "UNP"
     PAID = "PAID"

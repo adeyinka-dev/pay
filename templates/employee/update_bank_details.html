@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank Details</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}"/>
+  </head>
+  <body class="bg-gray">
+    
+    <header>
+        
+        <div class="mx w-full px-2 xl:container mt-8">
+          <div
+            class="flex items-center justify-between bg-transparent px-2 xl:px-[30px]"
+          >
+  
+            <div class="flex w-full items-center justify-end ml-20">
+                <div class="flex items-center justify-end">
+                    <div class="flex items-center">
+
+                        <div class="relative w-full max-w-[120px] lg:block">
+                            
+                          </div>
+                        <div
+                        >
+                          <a href="{% url 'employee_dashboard' %}"
+                            class="flex h-9 w-9 items-center justify-center rounded bg-white bg-opacity-[8%] text-white"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 384 512" fill="#ff1b1c">
+                                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                            
+                            </svg>
+                            
+                        </a>
+
+                        </div>
+        
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </header>
+      <!-- ====== Page Title Section Start -->
+      <div class="p-[25px]">
+        <div class="mb-10 border-b border-stroke pb-6">
+          <h2 class="text-2xl font-bold text-secondary">
+            Bank Account Details
+          </h2>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-5">
+              <label
+                  for="bankName"
+                  class="mb-3 block text-base font-medium text-black"
+              >
+                  Bank Name
+              </label>
+          
+              <select
+                  id="bankName"
+                  name="{{ form.bank.name }}"
+                  class="h-[50px] w-full rounded border border-stroke px-[22px] text-base text-black outline-none focus:border-primary bg-black bg-opacity-10"
+              >
+                  {% for option in form.bank.field.choices %}
+                      <option value="{{ option.0 }}" {% if option.0 == form.bank.value %}selected{% endif %}>
+                          {{ option.1 }}
+                      </option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="mb-5">
+              <label
+                for=""
+                class="mb-3 block text-base font-medium text-black"
+              >
+                Account Number
+              </label>
+
+              <input
+                type="number"
+                placeholder="Account Number"
+                value="{{ form.account_number.value }}"
+                name="{{ form.account_number.name }}"
+                class="h-[50px] w-full rounded border border-stroke px-[22px] text-base text-black outline-none focus:border-primary bg-black bg-opacity-10"
+              />
+                            {% if form.account_number.errors %}
+                            <div class="text-sm text-danger">
+                            {{ form.account_number.errors }}
+                            </div>
+                            {% endif %}
+            </div>
+            <div class="mb-5">
+              <label
+                for=""
+                class="mb-3 block text-base font-medium text-black"
+              >
+              Account Full Name
+              </label>
+
+              <input
+                type="text"
+                placeholder="Account Name"
+                value="{{ form.account_name.value }}"
+                name="{{ form.account_name.name }}"
+                class="h-[50px] w-full rounded border border-stroke px-[22px] text-base text-black outline-none focus:border-primary bg-black bg-opacity-10"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                class="flex h-11 w-full items-center justify-center rounded-md bg-primary text-base font-semibold text-white hover:bg-opacity-90"
+              >
+                UPDATE PROFILE
+              </button>
+            </div>
+          </form>
+      </div>
+  </body>
+</html>

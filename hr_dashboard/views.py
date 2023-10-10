@@ -81,6 +81,6 @@ class EmployeeListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     template_name = "dashboard.html"
 
 
-class EmployeeDetailView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
-    model = Employee
-    template_name = "employee_detail.html"
+# class EmployeeDetailView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
+#     model = Employee
+#     template_name = "employee_detail.html"

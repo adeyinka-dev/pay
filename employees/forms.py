@@ -34,14 +34,13 @@ class EmployeeSignUpForm(UserCreationForm):
         return user
 
 
-# Employee update details form
-class EmployeeChangeForm(UserChangeForm):
+# Employee bank details form
+class EmployeeBankDetailsForm(UserChangeForm):
     password = None
 
     class Meta:
         model = Employee
         fields = (
-            "mobile_number",
             "bank",
             "account_name",
             "account_number",

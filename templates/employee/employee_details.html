@@ -1,0 +1,146 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Information</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  </head>
+  <body class="bg-gray">
+    
+    <header>
+        
+        <div class="mx w-full px-2 xl:container mt-8">
+          <div
+            class="flex items-center justify-between bg-transparent px-2 xl:px-[30px]"
+          >
+  
+            <div class="flex w-full items-center justify-end ml-20">
+                <div class="flex items-center justify-end">
+                    <div class="flex items-center">
+
+                        <div class="relative w-full max-w-[120px] lg:block">
+                            
+                          </div>
+                        <div
+                        >
+                          <a 
+                            href="{% url 'employee_dashboard' %}"
+                            class="flex h-9 w-9 items-center justify-center rounded bg-white bg-opacity-[8%] text-white"
+                          >
+                                <svg xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 384 512" fill="#ff1b1c">
+                                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+                                    
+                                </svg>
+                            
+                            </a>
+
+                        </div>
+        
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </header>
+      <!-- ====== Page Title Section Start -->
+      <div class="p-[25px]">
+        <div class="mb-1 border-b border-stroke pb-6">
+          <h2 class="text-2xl font-bold text-secondary">
+            Employee Information
+          </h2>
+        </div>
+        <div class="md:container">
+            <div
+              class="w-full max-w-[470px] overflow-hidden bg-transparent"
+            >
+              <div
+                class="flex items-center justify-between border-b border-stroke p-5"
+              >
+                <div class="items-center xs:flex">
+                  <div
+                    class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                  <div class="text-secondary block"><i class="fa-solid fa-address-card" style="font-size: 3rem;"></i></div>
+                  </div>
+                  <div>
+                    <h5 class="text-base font-medium text-black">
+                      {{ user.first_name }} {{ user.last_name }}
+                    </h5>
+                    <p class="text-sm text-body-color">{{ user.email }}</p>
+                  </div>
+                </div>
+                <div>
+                    <span
+                    class="border-primary bg-primary text-gray m-2 inline-block rounded border py-2 px-5 text-sm font-semibold"
+                  >
+                  {{ user.employee_id }}
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between border-b border-stroke p-5"
+              >
+                <div class="items-center xs:flex">
+                  <div
+                    class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                  <div class="text-secondary block"><i class="fa-solid fa-building-columns" style="font-size: 3rem;"></i></div>
+                  </div>
+                  <div>
+                    <h5 class="text-base font-medium text-black">
+                      {{ user.account_number }}
+                    </h5>
+                    <p class="text-sm text-body-color">Savings</p>
+                  </div>
+                </div>
+                <div>
+                    <div
+                    class="mb-3 w-20 overflow-hidden  xs:mb-0 inline-block"
+                  >
+                    <img
+                      src="https://res.cloudinary.com/dituykawx/image/upload/v1696197178/United_Bank_for_Africa_Logo_zgrkbp.png"
+                      alt="bank"
+                      class="h-full w-full object-cover object-center"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex items-center justify-between border-b border-stroke p-5"
+              >
+                <div class="items-center xs:flex">
+                  <div
+                    class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                  <div class="text-secondary block"><i class="fa-solid fa-network-wired" style="font-size: 3rem;"></i></div>
+                  </div>
+                  <div>
+                    <h5 class="text-base font-medium text-black">
+                      {{ user.department.name }}
+                    </h5>
+                    <p class="text-sm text-body-color">₦{{ user.basic_salary|intcomma }}</p>
+                  </div>
+                </div>
+                <div>
+                    <span
+                    class="border-primary bg-primary text-gray m-2 inline-block rounded border py-2 px-5 text-sm font-semibold"
+                  >
+                    Active
+                  </span>
+                </div>
+              </div>
+    
+              
+            </div>
+          </div>
+      </div>
+        <!-- ====== Horizontal Menu Section Start -->
+
+    
+    <!-- ====== Horizontal Menu Section End -->
+   
+  </body>
+</html>

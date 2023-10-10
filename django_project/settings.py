@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-%s+s9##-9--i8r-w!+zxg$(i%&ydi9ug3jnut9o3#^_!#wt-e6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -49,6 +49,7 @@ SHARED_APPS = [
     "rest_framework",
     "banklist_api",
     "compressor",
+    "django.contrib.humanize",
 ]
 
 TENANT_APPS = [
