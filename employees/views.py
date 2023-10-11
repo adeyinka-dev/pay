@@ -66,7 +66,7 @@ class EmployeeProfileView(LoginRequiredMixin, TemplateView):
 
 class EmployeePayslipListView(LoginRequiredMixin, ListView):
     model = Payslip
-    template_name = "employee_payslip_list.html"
+    template_name = "employee/employee_payslip_list.html"
 
     def get_queryset(self):
         return Payslip.objects.filter(employee=self.request.user).order_by("-date")
@@ -74,7 +74,17 @@ class EmployeePayslipListView(LoginRequiredMixin, ListView):
 
 class MyPayslipDetailView(LoginRequiredMixin, DetailView):
     model = Payslip
-    template_name = "my_payslip_details.html"
+    template_name = "employee/my_payslip_details.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["company_name"] = self.request.tenant.name
+        context["deductions"] = Deduction.objects.filter(
+            employee=self.object.employee,
+            month=self.object.month,
+            year=self.object.year,
+        )
+        return context
 
 
 class EmployeeBankUpdateView(LoginRequiredMixin, UpdateView):

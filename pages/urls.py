@@ -23,7 +23,7 @@ from hr_dashboard.views import (
     DepartmentListView,
     PayslipCreateView,
     PayslipDetailView,
-    PayslipListView,
+    # PayslipListView,
 )
 from django.contrib.auth.views import LoginView
 
@@ -31,7 +31,6 @@ from django.contrib.auth.views import LoginView
 urlpatterns = [
     # Employee URLS
     path("employee/", EmployeeHomePageView.as_view(), name="employee_home"),
-    # Employee Signin&up and Authentication
     path("signup/", SignUpView.as_view(), name="employee_signup"),
     path(
         "employee-login/",
@@ -49,11 +48,8 @@ urlpatterns = [
         name="password_change_done",
     ),
     path("userlogout/", EmployeeLogoutView.as_view(), name="employee_logout"),
-    # Employee Pages
     path("your-dashboard/", EmployeeDashboardView.as_view(), name="employee_dashboard"),
     path("my-profile/", EmployeeProfileView.as_view(), name="employee_details"),
-    path("", HomePageView.as_view(), name="home"),
-    path("success/", Success.as_view(), name="success"),
     path("user/", EmployeeDashboardView.as_view(), name="user"),
     path(
         "update-bank-details/",
@@ -64,13 +60,15 @@ urlpatterns = [
         "my-payslips/", EmployeePayslipListView.as_view(), name="employee_payslip_list"
     ),
     path(
-        "my_payslips/<int:pk>/", MyPayslipDetailView.as_view(), name="my_payslip_detail"
+        "my_payslip/<int:pk>/", MyPayslipDetailView.as_view(), name="my_payslip_detail"
     ),
     # HR Urls
+    path("", HomePageView.as_view(), name="home"),
+    path("success/", Success.as_view(), name="success"),
     path("dashboard-login/", AdminLoginView.as_view(), name="admin_login"),
     path("dashboard/", EmployeeListView.as_view(), name="dashboard"),
     # path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee_detail"),
-    path("payslips/", PayslipListView.as_view(), name="payslip_list"),
+    # path("payslips/", PayslipListView.as_view(), name="payslip_list"),
     path("payslips/<int:pk>/", PayslipDetailView.as_view(), name="payslip_detail"),
     path("deductions/", DeductionListView.as_view(), name="deduction_list"),
     # HR forms
