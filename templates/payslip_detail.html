@@ -9,15 +9,36 @@
 </head>
 <body>
     <div class="container mt-5">
+
+        <div>
+            <h2>Change Payslip Status</h2>
+        
+            <form method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="{{ form.status.id_for_label }}">Status</label>
+                    {{ form.status }}
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+        </div>
+        <hr>
         <h2>Payslip for {{ object.employee.username }} - {{ object.date }}</h2>
         <p><strong>Department:</strong> {{ object.department.name }}</p>
         <p><strong>Date:</strong> {{ object.date }}</p>
         <p><strong>Month:</strong> {{ object.month }}</p>
         <p><strong>Year:</strong> {{ object.year }}</p>
-        <p><strong>Earnings:</strong> {{ object.earnings }}</p>
+        <p><strong>Earnings:</strong> {{ object.employee.basic_salary }}</p>
         <p><strong>Bonuses:</strong> {{ object.bonuses }}</p>
         <p><strong>Total Deductions:</strong> {{ object.total_deductions }}</p>
         <p><strong>Net Pay:</strong> {{ object.net_pay }}</p>
+        <p><strong>Status:</strong> {{ object.status }}</p>
     
         <h3>Deductions</h3>
         <table class="table table-bordered table-hover">
@@ -29,7 +50,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for deduction in object.deduction_set.all %}
+                {% for deduction in deductions %}
                 <tr>
                     <td>{{ deduction.get_type_display }}</td>
                     <td>{{ deduction.description }}</td>
@@ -39,7 +60,27 @@
             </tbody>
         </table>
     </div>
-    
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#statusChangedModal">Show Modal</button>
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    <div class="modal fade" id="statusChangedModal" tabindex="-1" aria-labelledby="statusChangedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statusChangedModalLabel">Status Updated</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Payslip status has been successfully updated.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

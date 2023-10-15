@@ -1,11 +1,29 @@
+from typing import Any
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.db import models
+from django.db.models import Sum, Count
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    TemplateView,
+)
 from employees.models import Employee
 from .models import Deduction, Department, Payslip
-from .forms import DeductionForm, DepartmentForm, EmployeeDepartmentForm, PayslipForm
+from .forms import (
+    DeductionForm,
+    DepartmentForm,
+    EmployeeDepartmentForm,
+    PayslipForm,
+    PayslipStatusForm,
+)
 from django.contrib.auth.views import LoginView
 from django.urls import reverse
 
@@ -24,6 +42,27 @@ class AdminLoginView(LoginView):
             return reverse("dashboard")
         # Redirect to another URL if not a superuser (optional)
         return reverse("home")
+
+
+class HRDashboardView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = "dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_employees"] = Employee.objects.count()
+        total_payouts = sum([p.net_pay for p in Payslip.objects.filter(status="Paid")])
+        context["total_payouts"] = total_payouts
+        total_pending = sum(
+            [p.net_pay for p in Payslip.objects.filter(status="Pending")]
+        )
+        context["total_pending"] = total_pending
+        total_deduction = sum(
+            [d.total_deductions for d in Payslip.objects.filter(status="Paid")]
+        )
+        context["total_deductions"] = total_deduction
+        context["latest_payslips"] = Payslip.objects.all()[:5]
+        context["new_employees"] = Employee.objects.order_by("-date_joined")[:5]
+        return context
 
 
 class DepartmentCreateView(LoginRequiredMixin, SuperuserRequiredMixin, CreateView):
@@ -71,16 +110,42 @@ class PayslipListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     template_name = "payslip_list.html"
 
 
-class PayslipDetailView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
+class PayslipDetailView(
+    LoginRequiredMixin, SuperuserRequiredMixin, FormMixin, DetailView
+):
     model = Payslip
     template_name = "payslip_detail.html"
+    form_class = PayslipStatusForm
+
+    def get_success_url(self):
+        return reverse("dashboard")
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        payslip = self.get_object()
+        payslip.status = form.cleaned_data["status"]
+        payslip.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = self.get_form()
+        context["deductions"] = Deduction.objects.filter(
+            employee=self.object.employee,
+            month=self.object.month,
+            year=self.object.year,
+        )
+        return context
 
 
 class EmployeeListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     model = Employee
     template_name = "dashboard.html"
-
-
-# class EmployeeDetailView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
-#     model = Employee
-#     template_name = "employee_detail.html"

@@ -14,10 +14,11 @@ from employees.views import (
 )
 from hr_dashboard.views import (
     AdminLoginView,
+    HRDashboardView,
     DeductionCreateView,
     DeductionListView,
     EmployeeDepartmentUpdateView,
-    EmployeeListView,
+    # EmployeeListView,
     # EmployeeDetailView,
     DepartmentCreateView,
     DepartmentListView,
@@ -66,7 +67,7 @@ urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
     path("success/", Success.as_view(), name="success"),
     path("dashboard-login/", AdminLoginView.as_view(), name="admin_login"),
-    path("dashboard/", EmployeeListView.as_view(), name="dashboard"),
+    path("dashboard/", HRDashboardView.as_view(), name="dashboard"),
     # path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee_detail"),
     # path("payslips/", PayslipListView.as_view(), name="payslip_list"),
     path("payslips/<int:pk>/", PayslipDetailView.as_view(), name="payslip_detail"),

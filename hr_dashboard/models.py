@@ -54,9 +54,9 @@ class Deduction(models.Model):
 
 
 class Payslip(models.Model):
-    PENDING = "PEN"
-    UNPAID = "UNP"
-    PAID = "PAID"
+    PENDING = "Pending"
+    UNPAID = "Unpaid"
+    PAID = "Paid"
     STATUS = [(PENDING, "Pending"), (UNPAID, "Unpaid"), (PAID, "Paid")]
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
     date = models.DateField(auto_now_add=True)
@@ -83,9 +83,11 @@ class Payslip(models.Model):
     def net_pay(self):
         return self.employee.basic_salary + self.bonuses - self.total_deductions
 
+    def get_payslip_id(self):
+        return f"{self.employee.id}-{self.month:02}-{str(self.year)[2:]}"
+
     def __str__(self):
-        payslip_id = f"{self.employee.id}-{self.month:02}-{str(self.year)[2:]}"
-        return f"{self.employee.first_name} {self.employee.last_name} - {self.date} - Net Pay:{self.net_pay} - Payslip ID:{payslip_id}"
+        return f"{self.employee.first_name} {self.employee.last_name} - {self.date} - Net Pay:{self.net_pay} - Payslip ID:{self.get_payslip_id()}"
 
     def get_absolute_url(self):
         return reverse("payslip", kwargs={"pk": self.pk})

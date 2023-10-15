@@ -9,91 +9,87 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-            <div class="position-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'dashboard' %}">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Employee Management
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Payroll
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Deductions
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            Reports
-                        </a>
-                    </li>
-                    <!-- Add more navigation items as needed -->
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
-            </div>
-
-            <!-- Here you can add widgets or sections for HR information -->
-            <!-- For example, a section for recent employee sign-ups -->
-            <h4>Recent Employee Sign-ups</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Employee ID</th>
-                        <th>Name</th>
-                        <th>Department</th>
-                        <!-- Add more columns as needed -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loop through recent employee sign-ups -->
-                    {% for employee in object_list %}
-                    <tr>
-                        <td>{{ employee.employee_id }}</td>
-                        <td>{{ employee.username }}</td>
-                        <td>{{ employee.department.name }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-
-            <div class="container mt-5">
-              <h2>Employees</h2>
-              <ul>
-                  {% for employee in object_list %}
+    <div class="container mt-5">
+        <h2 class="mb-5">HR Dashboard</h2>
     
-                  <li>
-                      <a href="{% url 'employee_detail' employee.pk %}">{{ employee.username }}</a>
-                  </li>
-                  {% endfor %}
-              </ul>
-          </div>
-        </main>
+        <!-- Summary Widgets -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Employees</h5>
+                        <p class="card-text">{{ total_employees }}</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Payroll</h5>
+                        <p class="card-text">{{ total_payouts }}</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Deductions</h5>
+                        <p class="card-text">{{ total_deductions }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pending</h5>
+                        <p class="card-text">{{ total_pending }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- You can add another summary widget here if needed -->
+        </div>
+    
+        <!-- Latest Payslips -->
+        <h4 class="mt-5 mb-3">Latest Payslips</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Date</th>
+                    <th>Earnings</th>
+                    <th>Bonuses</th>
+                    <th>Net Pay</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payslip in latest_payslips %}
+                <tr>
+                    <td><a href="{% url 'payslip_detail' payslip.pk %}">{{ payslip.get_payslip_id }}</a></td>
+                    <td>{{ payslip.employee }}</td>
+                    <td>{{ payslip.status }}</td>
+                    <td>{{ payslip.date }}</td>
+                    <td>{{ payslip.employee.basic_salary }}</td>
+                    <td>{{ payslip.bonuses }}</td>
+                    <td>{{ payslip.net_pay }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <!-- New Employee Sign-ups -->
+        <h4 class="mt-5 mb-3">New Employee Sign-ups</h4>
+        <ul class="list-group">
+            {% for employee in new_employees %}
+            <li class="list-group-item">{{ employee.first_name }} {{ employee.last_name }} - {{ employee.date_joined|date:"Y-m-d" }}</li>
+            {% endfor %}
+        </ul>
     </div>
-</div>
 
-<!-- Bootstrap JS, Popper.js, and jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

@@ -27,3 +27,9 @@ class PayslipForm(forms.ModelForm):
     class Meta:
         model = Payslip
         fields = ["employee", "month", "year", "bonuses"]
+
+
+class PayslipStatusForm(forms.ModelForm):
+    class Meta:
+        model = Payslip
+        fields = ["status"]
