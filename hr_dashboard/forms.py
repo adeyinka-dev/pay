@@ -9,12 +9,10 @@ class DepartmentForm(forms.ModelForm):
         fields = ["name"]
 
 
-class EmployeeDepartmentForm(forms.ModelForm):
-    department = forms.ModelChoiceField(queryset=Department.objects.all())
-
+class EmployeeBasicSalaryForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ["department", "basic_salary"]
+        fields = ["basic_salary"]
 
 
 class DeductionForm(forms.ModelForm):

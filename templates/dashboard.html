@@ -61,7 +61,7 @@
                     <th>Employee</th>
                     <th>Department</th>
                     <th>Date</th>
-                    <th>Earnings</th>
+                    <th>Basic Salary</th>
                     <th>Bonuses</th>
                     <th>Net Pay</th>
                 </tr>
@@ -73,7 +73,7 @@
                     <td>{{ payslip.employee }}</td>
                     <td>{{ payslip.status }}</td>
                     <td>{{ payslip.date }}</td>
-                    <td>{{ payslip.employee.basic_salary }}</td>
+                    <td>{{ payslip.basic_salary_at_time_of_generation }}</td>
                     <td>{{ payslip.bonuses }}</td>
                     <td>{{ payslip.net_pay }}</td>
                 </tr>
@@ -85,7 +85,11 @@
         <h4 class="mt-5 mb-3">New Employee Sign-ups</h4>
         <ul class="list-group">
             {% for employee in new_employees %}
-            <li class="list-group-item">{{ employee.first_name }} {{ employee.last_name }} - {{ employee.date_joined|date:"Y-m-d" }}</li>
+            <li class="list-group-item">
+                <a href="{% url 'employee_profile' employee.pk %}">
+                    {{ employee.first_name }} {{ employee.last_name }} - {{ employee.date_joined|date:"Y-m-d" }}
+                </a>
+            </li>
             {% endfor %}
         </ul>
     </div>

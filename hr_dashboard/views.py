@@ -1,7 +1,7 @@
 from typing import Any
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db import models
 from django.db.models import Sum, Count
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,7 +20,7 @@ from .models import Deduction, Department, Payslip
 from .forms import (
     DeductionForm,
     DepartmentForm,
-    EmployeeDepartmentForm,
+    EmployeeBasicSalaryForm,
     PayslipForm,
     PayslipStatusForm,
 )
@@ -40,7 +40,7 @@ class AdminLoginView(LoginView):
         # Check if the user is a superuser
         if self.request.user.is_superuser:
             return reverse("dashboard")
-        # Redirect to another URL if not a superuser (optional)
+        # Redirect to another URL if not a superuser
         return reverse("home")
 
 
@@ -77,15 +77,6 @@ class DepartmentListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     template_name = "department_list.html"
 
 
-class EmployeeDepartmentUpdateView(
-    LoginRequiredMixin, SuperuserRequiredMixin, UpdateView
-):
-    model = Employee
-    form_class = EmployeeDepartmentForm
-    template_name = "employee_department_form.html"
-    success_url = reverse_lazy("dashboard")
-
-
 class DeductionCreateView(LoginRequiredMixin, SuperuserRequiredMixin, CreateView):
     model = Deduction
     form_class = DeductionForm
@@ -102,7 +93,17 @@ class PayslipCreateView(LoginRequiredMixin, SuperuserRequiredMixin, CreateView):
     model = Payslip
     form_class = PayslipForm
     template_name = "payslip_form.html"
-    success_url = reverse_lazy("payslip_list")
+    success_url = reverse_lazy("dashboard")
+
+    def form_valid(self, form):
+        # Set basic_salary_at_time_of_generation from the employee's current basic_salary
+        payslip = form.save(
+            commit=False
+        )  # Get the Payslip object without saving to DB yet
+        payslip.basic_salary_at_time_of_generation = payslip.employee.basic_salary
+        payslip.save()  # Now, save the payslip to the DB
+        messages.success(self.request, "Payslip created successfully!")
+        return super().form_valid(form)
 
 
 class PayslipListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
@@ -146,6 +147,26 @@ class PayslipDetailView(
         return context
 
 
-class EmployeeListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
+class EmployeeProfileView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
     model = Employee
-    template_name = "dashboard.html"
+    template_name = "employee_profile.html"
+    context_object_name = "employee"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = EmployeeBasicSalaryForm(instance=self.object)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = EmployeeBasicSalaryForm(request.POST, instance=self.object)
+
+        if form.is_valid() and not self.object.is_salary_set:
+            employee = form.save(commit=False)
+            employee.is_salary_set = True
+            employee.save()
+            messages.success(request, "Basic salary set successfully!")
+            return redirect("employee_profile", pk=employee.pk)
+
+        messages.error(request, "Error setting salary. Maybe already set.")
+        return self.render_to_response(self.get_context_data(form=form))

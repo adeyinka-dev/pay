@@ -12,12 +12,13 @@ from employees.views import (
     EmployeeHomePageView,
     EmployeeProfileView,
 )
+
 from hr_dashboard.views import (
     AdminLoginView,
     HRDashboardView,
     DeductionCreateView,
     DeductionListView,
-    EmployeeDepartmentUpdateView,
+    EmployeeProfileView,
     # EmployeeListView,
     # EmployeeDetailView,
     DepartmentCreateView,
@@ -64,11 +65,15 @@ urlpatterns = [
         "my_payslip/<int:pk>/", MyPayslipDetailView.as_view(), name="my_payslip_detail"
     ),
     # HR Urls
-    path("", HomePageView.as_view(), name="home"),
+    path("home/", HomePageView.as_view(), name="home"),
     path("success/", Success.as_view(), name="success"),
-    path("dashboard-login/", AdminLoginView.as_view(), name="admin_login"),
+    path("", AdminLoginView.as_view(), name="admin_login"),
     path("dashboard/", HRDashboardView.as_view(), name="dashboard"),
-    # path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee_detail"),
+    path(
+        "adminview-employees/<int:pk>/",
+        EmployeeProfileView.as_view(),
+        name="employee_profile",
+    ),
     # path("payslips/", PayslipListView.as_view(), name="payslip_list"),
     path("payslips/<int:pk>/", PayslipDetailView.as_view(), name="payslip_detail"),
     path("deductions/", DeductionListView.as_view(), name="deduction_list"),
@@ -76,10 +81,5 @@ urlpatterns = [
     path("departments/add/", DepartmentCreateView.as_view(), name="department_add"),
     path("departments/", DepartmentListView.as_view(), name="department_list"),
     path("payslips/add/", PayslipCreateView.as_view(), name="payslip_add"),
-    path(
-        "employees/<int:pk>/edit/",
-        EmployeeDepartmentUpdateView.as_view(),
-        name="employee_edit_department",
-    ),
     path("deductions/add/", DeductionCreateView.as_view(), name="deduction_add"),
 ]

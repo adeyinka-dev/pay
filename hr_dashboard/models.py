@@ -58,6 +58,7 @@ class Payslip(models.Model):
     UNPAID = "Unpaid"
     PAID = "Paid"
     STATUS = [(PENDING, "Pending"), (UNPAID, "Unpaid"), (PAID, "Paid")]
+
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
     date = models.DateField(auto_now_add=True)
     month = models.PositiveIntegerField(choices=MONTH_CHOICES, null=True, blank=True)
@@ -65,6 +66,9 @@ class Payslip(models.Model):
         default=timezone.now().year, null=True, blank=True
     )
 
+    basic_salary_at_time_of_generation = models.DecimalField(
+        max_digits=14, decimal_places=2, null=True
+    )
     bonuses = models.DecimalField(max_digits=14, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS, default=PENDING)
 
@@ -81,7 +85,8 @@ class Payslip(models.Model):
 
     @property
     def net_pay(self):
-        return self.employee.basic_salary + self.bonuses - self.total_deductions
+        basic_salary = self.basic_salary_at_time_of_generation or 0
+        return basic_salary + self.bonuses - self.total_deductions
 
     def get_payslip_id(self):
         return f"{self.employee.id}-{self.month:02}-{str(self.year)[2:]}"

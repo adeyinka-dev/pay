@@ -18,6 +18,7 @@
         <p>Account Name: {{ object.account_name }}</p>
         <p>Department: {{ object.department.name }}</p>
         <p>Account Number: {{ object.account_number }}</p>
+        <p>Account Number: {{ object.basic_salary }}</p>
     
         <h3 class="mt-4">Payslips</h3>
         <table class="table">
@@ -46,9 +47,20 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
 
-    
+        {% if not employee.is_salary_set %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.basic_salary.id_for_label }}">Basic Salary</label>
+                {{ form.basic_salary }}
+            </div>
+            <button type="submit" class="btn btn-primary">Set Basic Salary</button>
+        </form>
+        {% else %}
+            <p>Basic salary for this employee is already set.</p>
+        {% endif %}
+        </div>
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

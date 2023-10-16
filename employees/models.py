@@ -9,10 +9,12 @@ class Employee(AbstractUser):
     employee_id = models.CharField(max_length=6, unique=True, blank=True, null=True)
     mobile_number = models.PositiveBigIntegerField(blank=True, null=True)
     bank = models.ForeignKey("banklist_api.Bank", on_delete=models.SET_NULL, null=True)
+    home_address = models.TextField(blank=True, null=True)
     account_name = models.CharField(max_length=255, blank=True, null=True)
     basic_salary = models.DecimalField(
         max_digits=14, decimal_places=2, default=0, null=True, blank=True
     )
+    is_salary_set = models.BooleanField(default=False)
     department = models.ForeignKey(
         "hr_dashboard.Department", on_delete=models.SET_NULL, null=True, blank=True
     )
