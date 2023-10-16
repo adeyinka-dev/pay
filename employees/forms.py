@@ -1,18 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
-from hr_dashboard.models import Department
+from hr_dashboard.models import Department, VerificationCode
 from .models import Employee
 
 
 class EmployeeSignUpForm(UserCreationForm):
     full_name = forms.CharField(max_length=150, label="Full Name")
+    verification_code = forms.CharField()
 
     class Meta:
         model = Employee
         fields = (
-            "email",  # Use email instead of username
+            "email",
             "full_name",
+            "verification_code",
             "password1",
             "password2",
         )
@@ -24,13 +26,24 @@ class EmployeeSignUpForm(UserCreationForm):
             raise ValidationError("Please enter both first and last name.")
         return full_name
 
+    def clean_verification_code(self):
+        code = self.cleaned_data.get("verification_code")
+        try:
+            verification_code_instance = VerificationCode.objects.get(code=code)
+        except VerificationCode.DoesNotExist:
+            raise forms.ValidationError("Invalid verification code.")
+        if verification_code_instance.status == VerificationCode.ISSUED:
+            raise forms.ValidationError("This verification code has already been used.")
+
+        return code
+
     def save(self, commit=True):
-        user = super().save(commit=False)
+        user = super().save(
+            commit=False
+        )  # Prepare the user instance but don't save to DB yet
         names = self.cleaned_data["full_name"].split()
         user.first_name = names[0]
         user.last_name = " ".join(names[1:])
-        if commit:
-            user.save()
         return user
 
 

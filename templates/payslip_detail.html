@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,19 +15,20 @@
         <div>
             <h2>Change Payslip Status</h2>
         
+            {% if form.status.errors %}
+            <div id="errorModal" class="modal">
+                <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Error</h2>
+                <p id="errorMessage">{{ form.status.errors }}</p>
+                </div>
+            </div>
+            {% endif %}
+
             <form method="post">
                 {% csrf_token %}
-                {% if form.errors %}
-                <div class="alert alert-danger">
-                    {{ form.errors }}
-                </div>
-                {% endif %}
-                <div class="form-group">
-                    <label for="{{ form.status.id_for_label }}">Status</label>
-                    {{ form.status }}
-                </div>
-    
-                <button type="submit" class="btn btn-primary">Update Status</button>
+                {{ form.as_p }}
+                <input type="submit" value="Update Status">
             </form>
         </div>
         <hr>
@@ -60,27 +63,6 @@
             </tbody>
         </table>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#statusChangedModal">Show Modal</button>
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-    <div class="modal fade" id="statusChangedModal" tabindex="-1" aria-labelledby="statusChangedModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="statusChangedModalLabel">Status Updated</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Payslip status has been successfully updated.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- The Modal -->
 </body>
 </html>

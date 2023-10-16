@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.urls import reverse
 from employees.models import Employee
@@ -19,12 +20,50 @@ MONTH_CHOICES = [
     (12, "December"),
 ]
 
+"""Creating a Departemnt will generate multiple unique codes that will be used for verifcation on sign up"""
+
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
+    row = models.IntegerField(null=True)
 
-    def __str__(self):
-        return f"{self.name}"
+    def get_verification_codes(self):
+        return self.verificationcode_set.all()
+
+    def save(self, *args, **kwargs):
+        # Check if the instance already exists in the database
+        if self.pk:
+            old_department = Department.objects.get(pk=self.pk)
+            difference = self.row - old_department.row
+        else:
+            difference = self.row
+
+        super().save(*args, **kwargs)
+
+        # Only create additional VerificationCode instances if there's an increase
+        if difference > 0:
+            for _ in range(difference):
+                VerificationCode.objects.create(
+                    department=self, code=str(uuid.uuid4())[:8]
+                )
+
+
+class VerificationCode(models.Model):
+    UNUSED = "Unused"
+    ISSUED = "Issued"
+    STATUS_CHOICES = [
+        (UNUSED, "Unused"),
+        (ISSUED, "Issued"),
+    ]
+
+    department = models.ForeignKey(
+        Department, related_name="verification_codes", on_delete=models.CASCADE
+    )
+    code = models.CharField(max_length=10, unique=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=UNUSED)
+    used_by = models.OneToOneField(
+        Employee, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
 
 class Deduction(models.Model):

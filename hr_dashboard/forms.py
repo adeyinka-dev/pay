@@ -6,7 +6,7 @@ from employees.models import Employee
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ["name"]
+        fields = ["name", "row"]
 
 
 class EmployeeBasicSalaryForm(forms.ModelForm):
@@ -31,3 +31,12 @@ class PayslipStatusForm(forms.ModelForm):
     class Meta:
         model = Payslip
         fields = ["status"]
+
+    def clean_status(self):
+        new_status = self.cleaned_data.get("status")
+        instance = getattr(self, "instance", None)
+        if instance and instance.status == "Paid" and instance.status != new_status:
+            raise forms.ValidationError(
+                "Once a payslip is set as paid, it cannot be changed."
+            )
+        return new_status

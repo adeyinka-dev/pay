@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from hr_dashboard.models import VerificationCode
 from .models import Employee
 from .forms import EmployeeSignUpForm, EmployeeBankDetailsForm
 from django.urls import reverse_lazy
@@ -33,18 +35,29 @@ class SignUpView(CreateView):
     def generate_unique_employee_id(self):
         year_part = str(datetime.now().year)[2:]
         while True:
-            random_part = f"{random.randint(0, 9999):04}"  # This ensures the number is always 4 digits
+            random_part = f"{random.randint(0, 9999):04}"  # Ensure a 4-digit number
             new_id = f"{year_part}{random_part}"
             if not Employee.objects.filter(employee_id=new_id).exists():
                 return new_id
 
     def form_valid(self, form):
-        user = form.save(commit=False)  # Don't save the instance yet
-        user.username = user.email  # Set the username to the email
+        user = form.save(commit=False)
+        user.username = user.email  # Set username to email
         user.employee_id = self.generate_unique_employee_id()
-        # If the department field is empty, it will simply save as None
-        user.department = form.cleaned_data.get("department")
-        user.save()
+
+        # Fetch the verification code instance
+        code_instance = VerificationCode.objects.get(
+            code=form.cleaned_data.get("verification_code")
+        )
+        user.department = code_instance.department  # Assign the department
+
+        user.save()  # Save user to DB
+
+        # Update VerificationCode instance
+        code_instance.used_by = user
+        code_instance.status = VerificationCode.ISSUED
+        code_instance.save()
+
         messages.success(self.request, "Thank You")
         return redirect(self.get_success_url())
 

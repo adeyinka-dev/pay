@@ -16,7 +16,7 @@ from django.views.generic import (
     TemplateView,
 )
 from employees.models import Employee
-from .models import Deduction, Department, Payslip
+from .models import Deduction, Department, Payslip, VerificationCode
 from .forms import (
     DeductionForm,
     DepartmentForm,
@@ -45,7 +45,7 @@ class AdminLoginView(LoginView):
 
 
 class HRDashboardView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
-    template_name = "dashboard.html"
+    template_name = "company/dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -69,7 +69,12 @@ class DepartmentCreateView(LoginRequiredMixin, SuperuserRequiredMixin, CreateVie
     model = Department
     form_class = DepartmentForm
     template_name = "department_form.html"
-    success_url = reverse_lazy("department_list")
+    success_url = reverse_lazy("verification_codes")
+
+
+class VerificationCodeListView(ListView):
+    model = VerificationCode
+    template_name = "verification_codes.html"
 
 
 class DepartmentListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
@@ -111,9 +116,7 @@ class PayslipListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
     template_name = "payslip_list.html"
 
 
-class PayslipDetailView(
-    LoginRequiredMixin, SuperuserRequiredMixin, FormMixin, DetailView
-):
+class PayslipDetailView(LoginRequiredMixin, SuperuserRequiredMixin, DetailView):
     model = Payslip
     template_name = "payslip_detail.html"
     form_class = PayslipStatusForm
@@ -123,22 +126,16 @@ class PayslipDetailView(
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.get_form()
+        form = self.form_class(request.POST, instance=self.object)
 
         if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        payslip = self.get_object()
-        payslip.status = form.cleaned_data["status"]
-        payslip.save()
-        return HttpResponseRedirect(self.get_success_url())
+            form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form"] = self.get_form()
+        context["form"] = self.form_class(initial={"status": self.object.status})
         context["deductions"] = Deduction.objects.filter(
             employee=self.object.employee,
             month=self.object.month,

@@ -1,0 +1,5 @@
+<ul>
+    {% for code in object_list %}
+    <li>{{ code.code }} - {{ code.department.name }} - {{ code.status }}</li>
+    {% endfor %}
+</ul>
