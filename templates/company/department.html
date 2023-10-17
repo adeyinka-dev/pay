@@ -1,0 +1,178 @@
+{% extends "company/adminbase.html" %}
+{% load humanize %}
+{% block content %}
+<main>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-4 2xl:p-4">
+      <!-- Breadcrumb Start -->
+      <div
+        class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <h2 class="text-title-md2 font-bold text-black">
+          Generate Payslip
+        </h2>
+
+        <nav>
+          <ol class="flex items-center gap-2">
+            <li>
+              <a class="font-medium" href="#">Dashboard</a>
+            </li>
+            
+          </ol>
+        </nav>
+      </div>
+      <!-- Breadcrumb End -->
+
+      <!-- ====== Form Layout Section Start -->
+      <div class="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div class="flex flex-col gap-9 xl:w-2/3">
+          <!-- Contact Form -->
+          <div
+            class="rounded-sm border border-stroke bg-white shadow-default"
+          >
+          <form method="post">
+            {% csrf_token %}
+            <div class="p-6.5">
+                <div class="mb-4">
+                    <label class="mb-2.5 block text-black">
+                        Department <span class="text-meta-1">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Department Name"
+                        name="{{ form.name.name }}"
+                        value="{{ form.name.value|default:'' }}"
+                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="mb-2.5 block text-black">
+                        Row <span class="text-meta-1">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        placeholder="Number of Roles"
+                        name="{{ form.row.name }}"
+                        value="{{ form.row.value|default:'' }}"
+                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
+                    />
+                </div>
+                <div class="mb-4">
+                    <label class="mb-2.5 block text-black">
+                        Basic Pay <span class="text-meta-1">*</span>
+                    </label>
+                    <input
+                        type="number"
+                        placeholder="Earnings"
+                        name="{{ form.basic_pay.name }}"
+                        value="{{ form.basic_pay.value|default:'' }}"
+                        class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
+                    />
+                </div>
+        
+                <button
+                    type="submit"
+                    class="flex w-full justify-center rounded bg-primary p-3 font-medium text-white"
+                >
+                    Submit
+                </button>
+            </div>
+        </form>
+        
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 xl:w-2/3 ml-auto">
+          <!-- Sign In Form -->
+          <div
+        class="col-span-12 rounded-sm border border-stroke bg-white shadow-default"
+      >
+        <div
+          class="flex items-start justify-between border-b border-stroke py-5 px-6"
+        >
+          <div>
+            <h2
+              class="mb-1.5 text-title-md2 font-bold text-black"
+            >
+                Department List with Basic Salary
+            </h2>
+            <p class="text-sm font-medium">Click salary batch to get unique codes for employee registration</p>
+          </div>
+        
+        </div>
+
+        <div class="px-3 pb-5 text-sm">
+            {% for department in departments %}
+          <div
+            class="group flex items-center justify-between rounded-md p-2 hover:bg-gray-2"
+          >
+            <div class="flex items-center gap-4">
+              <a href="#">
+                <h4
+                  class="font-medium text-black group-hover:text-primary"
+                >
+                {{ department.name|upper }}
+                </h4>
+              </a>
+            </div>
+            <a
+            href="{% url 'codes_by_department' department_name=department.name %}" target="_blank"
+            class="inline-block rounded border border-primary py-1 px-2 text-sm font-medium text-primary hover:opacity-80"
+            >
+                ₦{{ department.basic_pay|intcomma }}
+            </a>
+          
+          </div>
+          {% endfor %}
+          
+        </div>
+      </div>
+        </div>
+      </div>
+      <!-- ====== Form Layout Section End -->
+      <div class="flex flex-col gap-5 md:gap-7 2xl:gap-10">
+        <div class="rounded-sm border border-stroke bg-white shadow-default mt-6">
+          <div class="data-table-common data-table-two max-w-full overflow-x-auto">
+            <table class="table w-full table-auto" id="dataTableTwo">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="flex items-center justify-between gap-1.5 text-black">
+                        <p>Department</p>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="flex items-center justify-between gap-1.5 text-black">
+                        <p>Unique Code</p>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="flex items-center justify-between gap-1.5 text-black">
+                        <p>Code Status</p>
+                      </div>
+                    </th>
+                    <th>
+                        <div class="flex items-center justify-between gap-1.5 text-black">
+                          <p>Employee</p>
+                        </div>
+                    </th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                    {%for code in issued_codes %}
+                  <tr>
+                    <td>{{ code.department.name }}</td>
+                    <td><p class="text-primary font-semibold">{{ code.code }}</p></td>
+                    <td> <p class="text-danger"> {{ code.status }}</p> </td>
+                    <td><p class="text-primary">{{ code.used_by.first_name }} {{ code.used_by.last_name }}</p></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+        </div>
+        <!-- ====== Data Table Two End -->
+      </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,327 @@
+{% extends "company/adminbase.html" %}
+{% load humanize %}
+{% block content %}
+<main>
+    <div class="mx-auto max-w-screen-2xl p-4 md:p-4 2xl:p-4">
+      <!-- Breadcrumb Start -->
+      <div
+        class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+
+        <nav>
+          <ol class="flex items-center gap-2">
+           
+            
+          </ol>
+        </nav>
+      </div>
+      <!-- Breadcrumb End -->
+
+      <!-- ====== Form Layout Section Start -->
+      <div class="grid grid-cols-1 gap-9 sm:grid-cols-2">
+        <div class="flex flex-col gap-9 xl:w-2/3">
+          <!-- Contact Form -->
+          <div
+            class="rounded-sm border border-stroke bg-white shadow-default"
+          >
+          <div class="p-[25px]">
+            <div class="mb-1 border-b border-stroke pb-6">
+              <h2 class="text-2xl font-bold text-secondary">
+                Employee Information
+              </h2>
+            </div>
+            <div class="md:container">
+                <div
+                  class="w-full max-w-[470px] overflow-hidden bg-transparent"
+                >
+                  <div
+                    class="flex items-center justify-between border-b border-stroke p-5"
+                  >
+                    <div class="items-center xs:flex">
+                      <div
+                        class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                      <div class="text-secondary block"><i class="fa-solid fa-address-card" style="font-size: 3rem;"></i></div>
+                      </div>
+                      <div>
+                        <h5 class="text-base font-medium text-black text-lg">
+                            {{ object.first_name }} {{ object.last_name }}
+                        </h5>
+                        <p class="text-sm text-body-color">{{ object.username }}</p>
+                      </div>
+                    </div>
+                    <div>
+                        <span
+                        class="border-primary border-2 bg-transparent text-primary m-2 inline-block rounded border-2 py-2 px-5 text-sm font-semibold"
+                      >
+                       {{ object.employee_id }}
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center justify-between border-b border-stroke p-5"
+                  >
+                    <div class="items-center xs:flex">
+                      <div
+                        class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                      <div class="text-secondary block"><i class="fa-solid fa-building-columns" style="font-size: 3rem;"></i></div>
+                      </div>
+                      <div>
+                        <h5 class="text-base font-medium text-black text-lg">
+                            {{ object.account_number }}
+                        </h5>
+                        <p class="text-sm text-body-color">Savings</p>
+                      </div>
+                    </div>
+                    <div>
+                        <div
+                        class="mb-3 w-20 overflow-hidden  xs:mb-0 inline-block"
+                      >
+                        <img
+                          src="https://res.cloudinary.com/dituykawx/image/upload/v1696197177/Heritage_Bank_PLC_Logo_waw6b9.png"
+                          alt="profile"
+                          class="h-full w-full object-cover object-center"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center justify-between border-b border-stroke p-5"
+                  >
+                    <div class="items-center xs:flex">
+                      <div
+                        class="mb-3 mr-4 overflow-hidden rounded xs:mb-0">
+                      <div class="text-secondary block"><i class="fa-solid fa-network-wired" style="font-size: 3rem;"></i></div>
+                      </div>
+                      <div>
+                        <h5 class="text-base font-medium text-black text-lg">
+                          ₦{{ object.basic_salary|intcomma  }}
+                        </h5>
+                        <p class="text-sm text-body-color">Sales</p>
+                      </div>
+                    </div>
+                    
+                    <div x-data="{modalOpen: false}">
+                      <button
+                        @click="modalOpen = true"
+                        class="rounded-md bg-primary py-2 px-5 font-medium text-white text-sm"
+                      >
+                        Set Basic Salary
+                      </button>
+                        <div x-show="modalOpen" x-transition class="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
+                            <div
+                            @click.outside="modalOpen = false"
+                            class="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center md:py-15 md:px-17.5"
+                            >
+                                <span class="mx-auto inline-block">
+                                <svg
+                                width="60"
+                                height="60"
+                                viewBox="0 0 60 60"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                >
+                                <rect opacity="0.1" width="60" height="60" rx="30" fill="#DC2626" />
+                                <path
+                                d="M30 27.2498V29.9998V27.2498ZM30 35.4999H30.0134H30ZM20.6914 41H39.3086C41.3778 41 42.6704 38.7078 41.6358 36.8749L32.3272 20.3747C31.2926 18.5418 28.7074 18.5418 27.6728 20.3747L18.3642 36.8749C17.3296 38.7078 18.6222 41 20.6914 41Z"
+                                stroke="#DC2626"
+                                stroke-width="2.2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                />
+                                </svg>
+                                </span>
+                                <h3
+                                class="mt-5.5 pb-2 text-xl font-bold text-danger sm:text-2xl"
+                                >
+                                Important Warning
+                                </h3>
+                                <p class="mb-3 font-semibold ">
+                                Please double-check the amount and details before finalizing. Once set, the salary cannot be modified or adjusted through this form
+                                </p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                
+                                    {% if not employee.is_salary_set %}
+                                    <div class="mb-3">
+                                        <label for="{{ form.basic_salary.id_for_label }}" class="block font-medium mb-2">Basic Salary</label>
+                                        <input
+                                            type="text"
+                                            name="{{ form.basic_salary.name }}"
+                                            value="{{ form.basic_salary.value }}"
+                                            placeholder="Enter Basic Salary"
+                                            class="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary"
+                                        />
+                                        {% if form.basic_salary.errors %}
+                                            <div class="mt-2 text-red-500">
+                                                {{ form.basic_salary.errors|join:", " }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="-mx-3 flex flex-wrap gap-y-4">
+                                        <div class="w-full px-3 2xsm:w-1/2">
+                                            <!-- This button could be used to close a modal or other UI behaviors -->
+                                            <button
+                                                @click="modalOpen = false"
+                                                type="button"
+                                                class="block w-full rounded border border-stroke bg-gray p-2 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        <div class="w-full px-3 2xsm:w-1/2">
+                                            <button
+                                                type="submit"
+                                                class="block w-full rounded border bg-primary p-2 text-center font-medium text-white transition hover:bg-opacity-90"
+                                            >
+                                                Set Basic Salary
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                        <p class="text-danger font-semibold text-title-md">Basic salary for this employee is already set.</p>
+                                    {% endif %}
+                                </form>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+
+                  </div>
+        
+                  
+                </div>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!-- ====== Form Layout Section End -->
+      <div class="flex flex-col gap-5 md:gap-7 2xl:gap-10">
+        <!-- ====== Data Table One Start -->
+       
+        <!-- ====== Data Table One End -->
+
+        <!-- ====== Data Table Two Start -->
+        <div class="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default sm:px-7.5 xl:pb-1 mt-6">
+            <h4 class="mb-6 text-lg font-bold text-black">
+            Latest Generated Payslips
+            </h4>
+            <div class="max-w-full overflow-x-auto">
+                <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-2 text-left">
+                    <th
+                        class="py-4 px-4 font-medium text-black xl:pl-11"
+                    >
+                        Payslip Ref
+                    </th>
+                    <th
+                        class="min-w-[220px] py-4 px-4 font-medium text-black xl:pl-11"
+                    >
+                        Period
+                    </th>
+                    <th
+                        class="min-w-[220px] py-4 px-4 font-medium text-black xl:pl-11"
+                    >
+                        Deductions
+                    </th>
+                    <th
+                        class="min-w-[150px] py-4 px-4 font-medium text-black"
+                    >
+                        Net Pay
+                    </th>
+                    <th
+                        class="min-w-[120px] py-4 px-4 font-medium text-black"
+                    >
+                        Status
+                    </th>
+                    <th class="py-4 px-4 font-medium text-black">
+                        Actions
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payslip in object.payslip_set.all %}
+                    <tr>
+                    <td
+                        class="border-b border-[#eee] py-5 px-4 pl-9 xl:pl-11"
+                    >
+                        <h5 class="font-medium text-black">{{ payslip.get_payslip_id }}</h5>
+                    </td>
+                    <td
+                        class="border-b border-[#eee] py-5 px-4 pl-9 xl:pl-11"
+                    >
+                        <h5 class="font-medium text-black">{{ payslip.get_month_display }} {{ payslip.year }}</h5>
+                    </td>
+                    <td
+                        class="border-b border-[#eee] py-5 px-4 pl-9 xl:pl-11"
+                    >
+                        <h5 class="font-medium text-danger">₦{{ payslip.total_deductions|intcomma }}</h5>
+                    </td>
+                    <td class="border-b border-[#eee] py-5 px-4">
+                        <p class="text-meta-9">₦{{ payslip.net_pay|intcomma }}</p>
+                    </td>
+                    <td class="border-b border-[#eee] py-5 px-4">
+                        {% if payslip.status == "Pending" %}
+                        <p class="inline-flex rounded-full bg-black py-1 px-3 text-sm font-medium text-white hover:bg-opacity-90">Pending</p>
+                        {% elif payslip.status == "Paid" %}
+                        <p class="inline-flex rounded-full bg-primary py-1 px-3 text-sm font-medium text-white hover:bg-opacity-90">Paid</p>
+                        {% else %}
+                        <p class="inline-flex rounded-full bg-danger py-1 px-3 text-sm font-medium text-white hover:bg-opacity-90">Action Required</p>
+                        {% endif %}
+                    </td>
+                    <td class="border-b border-[#eee] py-5 px-4">
+                        <div class="flex items-center space-x-3.5">
+                          <a 
+                            href="{% url 'payslip_detail' payslip.pk %}"
+                            class="hover:text-primary">
+                            <svg
+                            class="fill-current"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            >
+                            <path
+                                d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                                fill=""
+                            />
+                            <path
+                                d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                                fill=""
+                            />
+                            </svg>
+                          </a>
+                        <button class="hover:text-primary">
+                            <svg
+                            class="fill-current"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            >
+                            <path
+                                d="M16.8754 11.6719C16.5379 11.6719 16.2285 11.9531 16.2285 12.3187V14.8219C16.2285 15.075 16.0316 15.2719 15.7785 15.2719H2.22227C1.96914 15.2719 1.77227 15.075 1.77227 14.8219V12.3187C1.77227 11.9812 1.49102 11.6719 1.12539 11.6719C0.759766 11.6719 0.478516 11.9531 0.478516 12.3187V14.8219C0.478516 15.7781 1.23789 16.5375 2.19414 16.5375H15.7785C16.7348 16.5375 17.4941 15.7781 17.4941 14.8219V12.3187C17.5223 11.9531 17.2129 11.6719 16.8754 11.6719Z"
+                                fill=""
+                            />
+                            <path
+                                d="M8.55074 12.3469C8.66324 12.4594 8.83199 12.5156 9.00074 12.5156C9.16949 12.5156 9.31012 12.4594 9.45074 12.3469L13.4726 8.43752C13.7257 8.1844 13.7257 7.79065 13.5007 7.53752C13.2476 7.2844 12.8539 7.2844 12.6007 7.5094L9.64762 10.4063V2.1094C9.64762 1.7719 9.36637 1.46252 9.00074 1.46252C8.66324 1.46252 8.35387 1.74377 8.35387 2.1094V10.4063L5.40074 7.53752C5.14762 7.2844 4.75387 7.31252 4.50074 7.53752C4.24762 7.79065 4.27574 8.1844 4.50074 8.43752L8.55074 12.3469Z"
+                                fill=""
+                            />
+                            </svg>
+                        </button>
+                        </div>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+</main>
+{% endblock %}

@@ -8,14 +8,83 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    
-    <div class="container mt-5">
-        <h2>Create Deduction</h2>
+    <div class="container">
+        <h2>Add Deduction</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Submit</button>
+        
+            {% if form.non_field_errors %}
+            <div class="error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+        
+            <div class="form-group">
+                <label for="{{ form.type.id_for_label }}">Type</label>
+                {{ form.type }}
+                {% if form.type.errors %}
+                <div class="error">
+                    {{ form.type.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                <div class="error">
+                    {{ form.description.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.amount.id_for_label }}">Amount</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                <div class="error">
+                    {{ form.amount.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.employee.id_for_label }}">Employee</label>
+                {{ form.employee }}
+                {% if form.employee.errors %}
+                <div class="error">
+                    {{ form.employee.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.year.id_for_label }}">Year</label>
+                {{ form.year }}
+                {% if form.year.errors %}
+                <div class="error">
+                    {{ form.year.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group">
+                <label for="{{ form.month.id_for_label }}">Month</label>
+                {{ form.month }}
+                {% if form.month.errors %}
+                <div class="error">
+                    {{ form.month.errors }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Add Deduction</button>
+        
         </form>
     </div>
+
+
+
 </body>
 </html>

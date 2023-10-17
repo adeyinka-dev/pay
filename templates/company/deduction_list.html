@@ -1,0 +1,81 @@
+{% extends "company/adminbase.html" %}
+{% load humanize %}
+{% block content %}
+<main>
+    <div class="mx-auto max-w-screen-2xl p-2 md:p-2 2xl:p-6">
+      <!-- Breadcrumb Start -->
+      <div
+        class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <h2 class="text-title-md2 font-bold text-black">
+          Employees
+        </h2>
+
+        <nav>
+          <ol class="flex items-center gap-2">
+            <li>
+              <a class="font-medium" href="#">Dashboard</a>
+            </li>
+           
+          </ol>
+        </nav>
+      </div>
+      <!-- Breadcrumb End -->
+
+      <div class="flex flex-col gap-5 md:gap-7 2xl:gap-10">
+        <div class="rounded-sm border-b border-stroke bg-white shadow-default">
+          <div class="data-table-common data-table-two max-w-full overflow-x-auto">
+            <table class="table w-full table-auto" id="dataTableTwo">
+              <thead>
+                <tr>
+                  <th>
+                    <div class="flex items-center justify-between gap-1 text-black">
+                      <p>Name</p>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="flex items-center justify-between gap-1 text-black">
+                      <p>Type</p>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="flex items-center justify-between gap-1 text-black">
+                      <p>Payslip Period</p>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="flex items-center justify-between gap-1 text-black">
+                      <p>Amount</p>
+                    </div>
+                  </th>
+                  <th>
+                    <div class="flex items-center justify-between gap-1 text-black">
+                      <p>Time Created</p>
+                    </div>
+                  </th>
+                 
+                </tr>
+              </thead>
+              <tbody>
+                {% for deduction in object_list %}
+                <tr>
+                    <td class="flex flex-col"><p class="text-primary">{{ deduction.employee.first_name }} {{ deduction.employee.last_name }}</p> 
+                      <p class="text-sm font-semibold">{{ deduction.employee.department.name }}</p>
+                    </td>
+                    <td>{{ deduction.get_type_display }}</td>
+                    <td>{{ deduction.get_month_display }} {{ deduction.year }}</td>
+                    <td><p class="text-danger">₦{{ deduction.amount|intcomma }}</p></td>
+                    <td class="flex flex-col">
+                      <p>{{ deduction.created_at|date:"M d, Y" }}</p> 
+                      <p class="text-sm font-semibold">{{ deduction.created_at|date:"g:ia" }}</p>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
+{% endblock %}

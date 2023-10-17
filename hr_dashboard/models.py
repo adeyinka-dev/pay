@@ -24,11 +24,14 @@ MONTH_CHOICES = [
 
 
 class Department(models.Model):
-    name = models.CharField(max_length=100)
-    row = models.IntegerField(null=True)
+    name = models.CharField(max_length=100, unique=True)
+    row = models.IntegerField()
+    basic_pay = models.DecimalField(
+        max_digits=14, decimal_places=2, default=0, null=True, blank=True
+    )
 
     def get_verification_codes(self):
-        return self.verificationcode_set.all()
+        return self.verification_codes.all()
 
     def save(self, *args, **kwargs):
         # Check if the instance already exists in the database
@@ -84,9 +87,10 @@ class Deduction(models.Model):
     type = models.CharField(max_length=20, choices=DEDUCTION_TYPES)
     description = models.TextField(null=True, blank=True)
     amount = models.DecimalField(max_digits=14, decimal_places=2, default=0)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-    month = models.PositiveIntegerField(choices=MONTH_CHOICES, null=True)
-    year = models.PositiveIntegerField(default=timezone.now().year, null=True)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    month = models.PositiveIntegerField(choices=MONTH_CHOICES)
+    year = models.PositiveIntegerField(default=timezone.now().year)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.get_type_display()} - {self.description}"
@@ -99,14 +103,14 @@ class Payslip(models.Model):
     STATUS = [(PENDING, "Pending"), (UNPAID, "Unpaid"), (PAID, "Paid")]
 
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True)
-    date = models.DateField(auto_now_add=True)
+    generated_on = models.DateTimeField(auto_now_add=True)
     month = models.PositiveIntegerField(choices=MONTH_CHOICES, null=True, blank=True)
     year = models.PositiveIntegerField(
         default=timezone.now().year, null=True, blank=True
     )
 
     basic_salary_at_time_of_generation = models.DecimalField(
-        max_digits=14, decimal_places=2, null=True
+        max_digits=14, decimal_places=2
     )
     bonuses = models.DecimalField(max_digits=14, decimal_places=2, default=0)
     status = models.CharField(max_length=20, choices=STATUS, default=PENDING)
@@ -128,7 +132,7 @@ class Payslip(models.Model):
         return basic_salary + self.bonuses - self.total_deductions
 
     def get_payslip_id(self):
-        return f"{self.employee.id}-{self.month:02}-{str(self.year)[2:]}"
+        return f"{self.employee.employee_id}{self.month:02}{str(self.year)[2:]}"
 
     def __str__(self):
         return f"{self.employee.first_name} {self.employee.last_name} - {self.date} - Net Pay:{self.net_pay} - Payslip ID:{self.get_payslip_id()}"

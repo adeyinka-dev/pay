@@ -15,18 +15,19 @@ from employees.views import (
 
 from hr_dashboard.views import (
     AdminLoginView,
+    AdminLogoutView,
+    CombinedDepartmentView,
     HRDashboardView,
+    EmployeeListView,
+    # Unfixed
     DeductionCreateView,
     DeductionListView,
     EmployeeProfileView,
+    VerificationCodeByDepartmentListView,
     VerificationCodeListView,
-    # EmployeeListView,
-    # EmployeeDetailView,
-    DepartmentCreateView,
-    DepartmentListView,
     PayslipCreateView,
     PayslipDetailView,
-    # PayslipListView,
+    PayslipListView,
 )
 from django.contrib.auth.views import LoginView
 
@@ -70,22 +71,31 @@ urlpatterns = [
     path("success/", Success.as_view(), name="success"),
     path("", AdminLoginView.as_view(), name="admin_login"),
     path("dashboard/", HRDashboardView.as_view(), name="dashboard"),
+    path("adminlogout/", AdminLogoutView.as_view(), name="admin_logout"),
+    path("employee-registry/", EmployeeListView.as_view(), name="admin_employee_list"),
     path(
         "adminview-employees/<int:pk>/",
         EmployeeProfileView.as_view(),
         name="employee_profile",
     ),
     path(
+        "departments/",
+        CombinedDepartmentView.as_view(),
+        name="department",
+    ),
+    path(
         "verification-codes/",
         VerificationCodeListView.as_view(),
         name="verification_codes",
     ),
-    # path("payslips/", PayslipListView.as_view(), name="payslip_list"),
-    path("payslips/<int:pk>/", PayslipDetailView.as_view(), name="payslip_detail"),
-    path("deductions/", DeductionListView.as_view(), name="deduction_list"),
-    # HR forms
-    path("departments/add/", DepartmentCreateView.as_view(), name="department_add"),
-    path("departments/", DepartmentListView.as_view(), name="department_list"),
-    path("payslips/add/", PayslipCreateView.as_view(), name="payslip_add"),
+    path(
+        "verification_codes/<str:department_name>/",
+        VerificationCodeByDepartmentListView.as_view(),
+        name="codes_by_department",
+    ),
     path("deductions/add/", DeductionCreateView.as_view(), name="deduction_add"),
+    path("deductions/", DeductionListView.as_view(), name="deduction_list"),
+    path("payslips/generate/", PayslipCreateView.as_view(), name="generate_payslip"),
+    path("payslips/<int:pk>/", PayslipDetailView.as_view(), name="payslip_detail"),
+    path("dashboard/payslips-list", PayslipListView.as_view(), name="all_payslip_list"),
 ]
