@@ -1,24 +1,2 @@
 <h1>egsitration Successful, THank You!!</h1>
 
-
-
-<div class="text-center">
-    <div x-data="{popover: false}" @click.outside="popover = false" class="relative inline-block">
-        <button @click.prevent="popover = !popover" class="inline-flex font-medium text-black">
-            {{ deduction.get_type_display }}
-        </button>
-        <div x-show="popover" class="absolute top-0 right-full z-20 mr-3 w-max max-w-[311px] rounded bg-white drop-shadow-5">
-            <span class="absolute -right-1.5 top-4 -z-10 h-4 w-4 rotate-45 rounded-sm bg-white"></span>
-            <div class="border-b border-stroke p-3">
-                <h4 class="text-center text-title-sm font-semibold text-black">
-                    {{ deduction.get_type_display }}
-                </h4>
-            </div>
-            <div class="py-4.5 px-5 text-center">
-                <p class="font-medium">
-                    {{ deduction.description }}
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
